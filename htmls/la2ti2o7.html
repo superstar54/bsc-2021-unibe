@@ -1,0 +1,3395 @@
+<html>
+<head>
+<title>ASE atomic visualization</title>
+<link rel="stylesheet" type="text/css"
+ href="https://www.x3dom.org/x3dom/release/x3dom.css">
+</link>
+<script type="text/javascript"
+ src="https://www.x3dom.org/x3dom/release/x3dom.js">
+</script>
+<style>
+* {
+    box-sizing: border-box;
+  }
+ 
+/* Create two unequal columns that floats next to each other */
+.column {
+  float: left;
+  padding: 1px;
+}
+
+.left {
+  width: 20%;
+}
+
+.right {
+  width: 80%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+#x3dase{
+    top:0;
+    width: 80%;
+    height: 80%;
+    border:2px solid darkorange;        
+}
+
+#sidebar{
+    top:0;
+    border:2px solid darkorange;        
+}
+
+
+/* Sidebar component containers */
+.ui-widget-header
+{
+  background-color: lightblue;
+  font-size: 12px;
+
+}
+.sidebarComponent
+{
+    padding:2px 2px 2px 2px;
+    font-size: medium;
+}
+
+.button {
+  background-color: #4CAF50; /* Green */
+  border: 1px solid green;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
+  cursor: pointer;
+  /* float: left; */
+}
+
+</style></head>
+<body>
+<div class = "column left", id = "sidebar">
+
+    <div class="ui-widget-header">Model</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left;">
+            <button type="button" class = "button" onclick="spacefilling('e9dd4b61')">Ball</button>
+            <button type="button" class = "button" onclick="ballstick('e9dd4b61')">Ball-and-stick</button>
+            <button type="button" class = "button" onclick="polyhedra('e9dd4b61')">Polyhedra</button>
+        </form>
+    </div>
+    <div class="ui-widget-header">Label</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left;">
+            <button type="button" class = "button" onclick="none('e9dd4b61')">None</button>
+            <button type="button" class = "button" onclick="element('e9dd4b61')"> Element</button>
+            <button type="button" class = "button" onclick="index('e9dd4b61')">Index</button>
+        </form>
+    </div>
+
+    <div class="ui-widget-header">Camera</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left;">
+            <button type="button" class = "button" onclick="document.getElementById('camera_ortho_e9dd4b61').setAttribute('set_bind','true');">Orthographic</button>
+            <button type="button" class = "button" onclick="document.getElementById('camera_persp_e9dd4b61').setAttribute('set_bind','true');">Perspective</button>
+        </form>
+    </div>
+
+    <div class="ui-widget-header">View</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left;">
+            <button type="button" class = "button" onclick="set_viewpoint('e9dd4b61', 'top_pos', 'top_ori')">Top</button>
+            <button type="button" class = "button" onclick="set_viewpoint('e9dd4b61', 'front_pos', 'front_ori')">Front</button>
+            <button type="button" class = "button" onclick="set_viewpoint('e9dd4b61', 'right_pos', 'right_ori')">Right</button>
+        </form>
+    </div>
+
+    <div class="ui-widget-header">Measurement</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left; font-size: 12px;">
+            <table style="font-size:1.0em;">
+                <td id="lastonMouseoverObject_kind_e9dd4b61">-</td> <td id="lastonMouseoverObject_index_e9dd4b61">-</td> 
+                <td id="position_e9dd4b61">-</td></tr>
+            </table>
+            <p id="measure_e9dd4b61"></p>
+            <p id="error_e9dd4b61"></p>
+        </form>
+    </div>
+
+</div>
+
+<script>
+    document.onkeyup = function(e) {
+      var x = event.which || event.keyCode;
+      var label = 0;
+        if (x == 49) {
+            set_viewpoint('e9dd4b61', 'top_pos', 'top_ori');
+        } else if (x == 50) {
+            set_viewpoint('e9dd4b61', 'front_pos', 'front_ori');
+        } else if (x == 51) {
+            set_viewpoint('e9dd4b61', 'right_pos', 'right_ori');
+        } else if (x == 83) {
+          spacefilling('e9dd4b61');
+        } else if (x == 66) {
+          ballstick('e9dd4b61');
+        } else if (x == 80) {
+          polyhedra('e9dd4b61');
+        } else if (x == 52) {
+            element('e9dd4b61');
+        } else if (x == 53) {
+            index('e9dd4b61');
+        } else if (x == 54) {
+            none('e9dd4b61');
+        }
+      };
+    </script>
+ <div class = "column right" > 
+   <X3D id = "x3dase" PrimitiveQuality = "high" > 
+     <Scene > 
+       <Transform id = "t_camera_persp_e9dd4b61" rotation = "0 0 0 0" > 
+         <Viewpoint id = "camera_persp_e9dd4b61" position = "2.9279905007347744 2.6520579272038574 24.952397238484533" centerOfRotation = "2.9279905007347744 2.6520579272038574 6.536395497985083" orientation = "0 0 0 0" description = "camera" > 
+         </Viewpoint> 
+       </Transform> 
+       <Transform id = "t_camera_ortho_e9dd4b61" rotation = "0 0 0 0" > 
+         <OrthoViewpoint id = "camera_ortho_e9dd4b61" position = "2.9279905007347744 2.6520579272038574 24.952397238484533" centerOfRotation = "2.9279905007347744 2.6520579272038574 6.536395497985083" orientation = "0 0 0 0" fieldOfView = "-6.13866724683315 -6.13866724683315 6.13866724683315 6.13866724683315" description = "camera" > 
+         </OrthoViewpoint> 
+       </Transform> 
+       <Group onclick = "handleGroupClick(event, 'e9dd4b61')" > 
+         <Switch whichChoice = "-1" > 
+           <Shape DEF = "as_O" id = "as_O_e9dd4b61" > 
+             <Appearance DEF = "app_O" > 
+               <Material name = "am_e9dd4b61" diffuseColor = "1.0 0.051 0.051" transparency = "0.01" > 
+               </Material> 
+             </Appearance> 
+             <Sphere DEF = "asp_O" radius = "0.66" > 
+             </Sphere> 
+           </Shape> 
+         </Switch> 
+         <Transform DEF = "at_16_e9dd4b61" uuid = "e9dd4b61" id = "at_16_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "0.11 5.18 5.62" scale = "1 1 1" > 
+           <Shape kind = "O" index = "16" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_17_e9dd4b61" uuid = "e9dd4b61" id = "at_17_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "5.74 2.38 7.45" scale = "1 1 1" > 
+           <Shape kind = "O" index = "17" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_18_e9dd4b61" uuid = "e9dd4b61" id = "at_18_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "5.86 4.4 3.99" scale = "1 1 1" > 
+           <Shape kind = "O" index = "18" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_19_e9dd4b61" uuid = "e9dd4b61" id = "at_19_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "-0.14 3.07 2.42" scale = "1 1 1" > 
+           <Shape kind = "O" index = "19" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_20_e9dd4b61" uuid = "e9dd4b61" id = "at_20_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "2.06 2.32 7.33" scale = "1 1 1" > 
+           <Shape kind = "O" index = "20" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_21_e9dd4b61" uuid = "e9dd4b61" id = "at_21_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "1.95 1.77 1.19" scale = "1 1 1" > 
+           <Shape kind = "O" index = "21" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_22_e9dd4b61" uuid = "e9dd4b61" id = "at_22_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "0.39 0.21 2.97" scale = "1 1 1" > 
+           <Shape kind = "O" index = "22" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_23_e9dd4b61" uuid = "e9dd4b61" id = "at_23_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "-0.13 2.48 5.32" scale = "1 1 1" > 
+           <Shape kind = "O" index = "23" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_24_e9dd4b61" uuid = "e9dd4b61" id = "at_24_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "3.66 5.47 0.28" scale = "1 1 1" > 
+           <Shape kind = "O" index = "24" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_25_e9dd4b61" uuid = "e9dd4b61" id = "at_25_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "2.2 2.67 12.79" scale = "1 1 1" > 
+           <Shape kind = "O" index = "25" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_26_e9dd4b61" uuid = "e9dd4b61" id = "at_26_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "4.05 2.38 5.17" scale = "1 1 1" > 
+           <Shape kind = "O" index = "26" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_27_e9dd4b61" uuid = "e9dd4b61" id = "at_27_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "6.0 0.27 10.65" scale = "1 1 1" > 
+           <Shape kind = "O" index = "27" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_28_e9dd4b61" uuid = "e9dd4b61" id = "at_28_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "3.9 0.95 9.04" scale = "1 1 1" > 
+           <Shape kind = "O" index = "28" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_29_e9dd4b61" uuid = "e9dd4b61" id = "at_29_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "0.25 5.47 0.25" scale = "1 1 1" > 
+           <Shape kind = "O" index = "29" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_30_e9dd4b61" uuid = "e9dd4b61" id = "at_30_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "4.04 3.09 2.4" scale = "1 1 1" > 
+           <Shape kind = "O" index = "30" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_31_e9dd4b61" uuid = "e9dd4b61" id = "at_31_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "3.9 4.57 11.88" scale = "1 1 1" > 
+           <Shape kind = "O" index = "31" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_32_e9dd4b61" uuid = "e9dd4b61" id = "at_32_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "5.46 3.01 10.1" scale = "1 1 1" > 
+           <Shape kind = "O" index = "32" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_33_e9dd4b61" uuid = "e9dd4b61" id = "at_33_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "1.81 5.18 7.9" scale = "1 1 1" > 
+           <Shape kind = "O" index = "33" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_34_e9dd4b61" uuid = "e9dd4b61" id = "at_34_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "-0.01 3.89 11.66" scale = "1 1 1" > 
+           <Shape kind = "O" index = "34" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_35_e9dd4b61" uuid = "e9dd4b61" id = "at_35_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "2.35 3.05 10.06" scale = "1 1 1" > 
+           <Shape kind = "O" index = "35" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_36_e9dd4b61" uuid = "e9dd4b61" id = "at_36_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "5.6 2.67 12.82" scale = "1 1 1" > 
+           <Shape kind = "O" index = "36" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_37_e9dd4b61" uuid = "e9dd4b61" id = "at_37_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "1.96 3.75 4.03" scale = "1 1 1" > 
+           <Shape kind = "O" index = "37" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_38_e9dd4b61" uuid = "e9dd4b61" id = "at_38_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "1.82 0.29 10.67" scale = "1 1 1" > 
+           <Shape kind = "O" index = "38" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_39_e9dd4b61" uuid = "e9dd4b61" id = "at_39_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "5.99 5.28 7.75" scale = "1 1 1" > 
+           <Shape kind = "O" index = "39" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_40_e9dd4b61" uuid = "e9dd4b61" id = "at_40_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "3.8 5.12 5.74" scale = "1 1 1" > 
+           <Shape kind = "O" index = "40" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_41_e9dd4b61" uuid = "e9dd4b61" id = "at_41_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "5.86 1.09 1.41" scale = "1 1 1" > 
+           <Shape kind = "O" index = "41" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_42_e9dd4b61" uuid = "e9dd4b61" id = "at_42_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "-0.0 1.61 9.08" scale = "1 1 1" > 
+           <Shape kind = "O" index = "42" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_43_e9dd4b61" uuid = "e9dd4b61" id = "at_43_e9dd4b61" radius = "0.66" name = "at_e9dd4b61" translation = "3.51 0.25 3.01" scale = "1 1 1" > 
+           <Shape kind = "O" index = "43" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Switch whichChoice = "-1" > 
+           <Shape DEF = "as_Ti" id = "as_Ti_e9dd4b61" > 
+             <Appearance DEF = "app_Ti" > 
+               <Material name = "am_e9dd4b61" diffuseColor = "0.749 0.761 0.78" transparency = "0.01" > 
+               </Material> 
+             </Appearance> 
+             <Sphere DEF = "asp_Ti" radius = "1.6" > 
+             </Sphere> 
+           </Shape> 
+         </Switch> 
+         <Transform DEF = "at_8_e9dd4b61" uuid = "e9dd4b61" id = "at_8_e9dd4b61" radius = "1.6" name = "at_e9dd4b61" translation = "3.92 3.91 4.25" scale = "1 1 1" > 
+           <Shape kind = "Ti" index = "8" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_Ti" > 
+             </Appearance> 
+             <Sphere USE = "asp_Ti" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_9_e9dd4b61" uuid = "e9dd4b61" id = "at_9_e9dd4b61" radius = "1.6" name = "at_e9dd4b61" translation = "5.84 4.1 11.51" scale = "1 1 1" > 
+           <Shape kind = "Ti" index = "9" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_Ti" > 
+             </Appearance> 
+             <Sphere USE = "asp_Ti" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_10_e9dd4b61" uuid = "e9dd4b61" id = "at_10_e9dd4b61" radius = "1.6" name = "at_e9dd4b61" translation = "3.88 1.31 1.58" scale = "1 1 1" > 
+           <Shape kind = "Ti" index = "10" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_Ti" > 
+             </Appearance> 
+             <Sphere USE = "asp_Ti" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_11_e9dd4b61" uuid = "e9dd4b61" id = "at_11_e9dd4b61" radius = "1.6" name = "at_e9dd4b61" translation = "-0.04 3.94 4.21" scale = "1 1 1" > 
+           <Shape kind = "Ti" index = "11" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_Ti" > 
+             </Appearance> 
+             <Sphere USE = "asp_Ti" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_12_e9dd4b61" uuid = "e9dd4b61" id = "at_12_e9dd4b61" radius = "1.6" name = "at_e9dd4b61" translation = "0.02 1.3 1.56" scale = "1 1 1" > 
+           <Shape kind = "Ti" index = "12" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_Ti" > 
+             </Appearance> 
+             <Sphere USE = "asp_Ti" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_13_e9dd4b61" uuid = "e9dd4b61" id = "at_13_e9dd4b61" radius = "1.6" name = "at_e9dd4b61" translation = "1.97 4.11 11.49" scale = "1 1 1" > 
+           <Shape kind = "Ti" index = "13" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_Ti" > 
+             </Appearance> 
+             <Sphere USE = "asp_Ti" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_14_e9dd4b61" uuid = "e9dd4b61" id = "at_14_e9dd4b61" radius = "1.6" name = "at_e9dd4b61" translation = "1.94 1.12 8.82" scale = "1 1 1" > 
+           <Shape kind = "Ti" index = "14" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_Ti" > 
+             </Appearance> 
+             <Sphere USE = "asp_Ti" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_15_e9dd4b61" uuid = "e9dd4b61" id = "at_15_e9dd4b61" radius = "1.6" name = "at_e9dd4b61" translation = "5.9 1.15 8.87" scale = "1 1 1" > 
+           <Shape kind = "Ti" index = "15" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_Ti" > 
+             </Appearance> 
+             <Sphere USE = "asp_Ti" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Switch whichChoice = "-1" > 
+           <Shape DEF = "as_La" id = "as_La_e9dd4b61" > 
+             <Appearance DEF = "app_La" > 
+               <Material name = "am_e9dd4b61" diffuseColor = "0.439 0.831 1.0" transparency = "0.01" > 
+               </Material> 
+             </Appearance> 
+             <Sphere DEF = "asp_La" radius = "2.07" > 
+             </Sphere> 
+           </Shape> 
+         </Switch> 
+         <Transform DEF = "at_0_e9dd4b61" uuid = "e9dd4b61" id = "at_0_e9dd4b61" radius = "2.07" name = "at_e9dd4b61" translation = "5.84 0.83 5.5" scale = "1 1 1" > 
+           <Shape kind = "La" index = "0" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_La" > 
+             </Appearance> 
+             <Sphere USE = "asp_La" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_1_e9dd4b61" uuid = "e9dd4b61" id = "at_1_e9dd4b61" radius = "2.07" name = "at_e9dd4b61" translation = "0.01 3.63 7.57" scale = "1 1 1" > 
+           <Shape kind = "La" index = "1" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_La" > 
+             </Appearance> 
+             <Sphere USE = "asp_La" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_2_e9dd4b61" uuid = "e9dd4b61" id = "at_2_e9dd4b61" radius = "2.07" name = "at_e9dd4b61" translation = "1.98 1.09 5.09" scale = "1 1 1" > 
+           <Shape kind = "La" index = "2" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_La" > 
+             </Appearance> 
+             <Sphere USE = "asp_La" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_3_e9dd4b61" uuid = "e9dd4b61" id = "at_3_e9dd4b61" radius = "2.07" name = "at_e9dd4b61" translation = "0.0 1.33 11.82" scale = "1 1 1" > 
+           <Shape kind = "La" index = "3" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_La" > 
+             </Appearance> 
+             <Sphere USE = "asp_La" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_4_e9dd4b61" uuid = "e9dd4b61" id = "at_4_e9dd4b61" radius = "2.07" name = "at_e9dd4b61" translation = "3.9 1.37 11.55" scale = "1 1 1" > 
+           <Shape kind = "La" index = "4" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_La" > 
+             </Appearance> 
+             <Sphere USE = "asp_La" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_5_e9dd4b61" uuid = "e9dd4b61" id = "at_5_e9dd4b61" radius = "2.07" name = "at_e9dd4b61" translation = "3.88 3.89 7.98" scale = "1 1 1" > 
+           <Shape kind = "La" index = "5" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_La" > 
+             </Appearance> 
+             <Sphere USE = "asp_La" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_6_e9dd4b61" uuid = "e9dd4b61" id = "at_6_e9dd4b61" radius = "2.07" name = "at_e9dd4b61" translation = "1.96 4.17 1.52" scale = "1 1 1" > 
+           <Shape kind = "La" index = "6" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_La" > 
+             </Appearance> 
+             <Sphere USE = "asp_La" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_7_e9dd4b61" uuid = "e9dd4b61" id = "at_7_e9dd4b61" radius = "2.07" name = "at_e9dd4b61" translation = "5.85 4.13 1.25" scale = "1 1 1" > 
+           <Shape kind = "La" index = "7" uuid = "e9dd4b61" > 
+             <Appearance USE = "app_La" > 
+             </Appearance> 
+             <Sphere USE = "asp_La" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Group> 
+       <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+       </Fontstyle> 
+       <Appearance DEF = "text_app_O" > 
+         <Material diffuseColor = "0 0 0" > 
+         </Material> 
+       </Appearance> 
+       <Switch whichChoice = "-1" > 
+         <Billboard DEF = "billboard_O" axisOfRotation = "0 0 0" > 
+           <Shape DEF = "O" id = "as_e9dd4b61" > 
+             <Appearance DEF = "text_app_O" > 
+               <Material diffuseColor = "0 0 0" > 
+               </Material> 
+             </Appearance> 
+             <Text string = "O" solid = "true" > 
+               <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+               </Fontstyle> 
+             </Text> 
+           </Shape> 
+         </Billboard> 
+       </Switch> 
+       <Fontstyle DEF = "st_label" family = "SANS" size = "0.8" > 
+       </Fontstyle> 
+       <Appearance DEF = "text_app_Ti" > 
+         <Material diffuseColor = "0 0 0" > 
+         </Material> 
+       </Appearance> 
+       <Switch whichChoice = "-1" > 
+         <Billboard DEF = "billboard_Ti" axisOfRotation = "0 0 0" > 
+           <Shape DEF = "Ti" id = "as_e9dd4b61" > 
+             <Appearance DEF = "text_app_Ti" > 
+               <Material diffuseColor = "0 0 0" > 
+               </Material> 
+             </Appearance> 
+             <Text string = "Ti" solid = "true" > 
+               <Fontstyle DEF = "st_label" family = "SANS" size = "0.8" > 
+               </Fontstyle> 
+             </Text> 
+           </Shape> 
+         </Billboard> 
+       </Switch> 
+       <Fontstyle DEF = "st_label" family = "SANS" size = "1.035" > 
+       </Fontstyle> 
+       <Appearance DEF = "text_app_La" > 
+         <Material diffuseColor = "0 0 0" > 
+         </Material> 
+       </Appearance> 
+       <Switch whichChoice = "-1" > 
+         <Billboard DEF = "billboard_La" axisOfRotation = "0 0 0" > 
+           <Shape DEF = "La" id = "as_e9dd4b61" > 
+             <Appearance DEF = "text_app_La" > 
+               <Material diffuseColor = "0 0 0" > 
+               </Material> 
+             </Appearance> 
+             <Text string = "La" solid = "true" > 
+               <Fontstyle DEF = "st_label" family = "SANS" size = "1.035" > 
+               </Fontstyle> 
+             </Text> 
+           </Shape> 
+         </Billboard> 
+       </Switch> 
+       <Switch id = "ele_e9dd4b61" whichChoice = "-1" > 
+         <Group > 
+           <Transform translation = "0.11 5.18 5.62" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "5.74 2.38 7.45" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "5.86 4.4 3.99" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "-0.14 3.07 2.42" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "2.06 2.32 7.33" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "1.95 1.77 1.19" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "0.39 0.21 2.97" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "-0.13 2.48 5.32" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "3.66 5.47 0.28" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "2.2 2.67 12.79" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "4.05 2.38 5.17" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "6.0 0.27 10.65" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "3.9 0.95 9.04" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "0.25 5.47 0.25" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "4.04 3.09 2.4" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "3.9 4.57 11.88" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "5.46 3.01 10.1" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "1.81 5.18 7.9" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "-0.01 3.89 11.66" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "2.35 3.05 10.06" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "5.6 2.67 12.82" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "1.96 3.75 4.03" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "1.82 0.29 10.67" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "5.99 5.28 7.75" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "3.8 5.12 5.74" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "5.86 1.09 1.41" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "-0.0 1.61 9.08" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "3.51 0.25 3.01" > 
+             <Billboard USE = "billboard_O" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "3.92 3.91 4.25" > 
+             <Billboard USE = "billboard_Ti" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "5.84 4.1 11.51" > 
+             <Billboard USE = "billboard_Ti" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "3.88 1.31 1.58" > 
+             <Billboard USE = "billboard_Ti" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "-0.04 3.94 4.21" > 
+             <Billboard USE = "billboard_Ti" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "0.02 1.3 1.56" > 
+             <Billboard USE = "billboard_Ti" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "1.97 4.11 11.49" > 
+             <Billboard USE = "billboard_Ti" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "1.94 1.12 8.82" > 
+             <Billboard USE = "billboard_Ti" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "5.9 1.15 8.87" > 
+             <Billboard USE = "billboard_Ti" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "5.84 0.83 5.5" > 
+             <Billboard USE = "billboard_La" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "0.01 3.63 7.57" > 
+             <Billboard USE = "billboard_La" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "1.98 1.09 5.09" > 
+             <Billboard USE = "billboard_La" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "0.0 1.33 11.82" > 
+             <Billboard USE = "billboard_La" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "3.9 1.37 11.55" > 
+             <Billboard USE = "billboard_La" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "3.88 3.89 7.98" > 
+             <Billboard USE = "billboard_La" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "1.96 4.17 1.52" > 
+             <Billboard USE = "billboard_La" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "5.85 4.13 1.25" > 
+             <Billboard USE = "billboard_La" axisOfRotation = "0 0 0" > 
+             </Billboard> 
+           </Transform> 
+         </Group> 
+       </Switch> 
+       <Switch id = "ind_e9dd4b61" whichChoice = "-1" > 
+         <Group > 
+           <Transform translation = "0.11 5.18 5.62" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "16" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "5.74 2.38 7.45" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "17" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "5.86 4.4 3.99" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "18" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "-0.14 3.07 2.42" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "19" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "2.06 2.32 7.33" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "20" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "1.95 1.77 1.19" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "21" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "0.39 0.21 2.97" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "22" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "-0.13 2.48 5.32" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "23" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "3.66 5.47 0.28" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "24" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "2.2 2.67 12.79" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "25" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "4.05 2.38 5.17" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "26" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "6.0 0.27 10.65" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "27" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "3.9 0.95 9.04" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "28" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "0.25 5.47 0.25" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "29" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "4.04 3.09 2.4" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "30" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "3.9 4.57 11.88" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "31" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "5.46 3.01 10.1" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "32" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "1.81 5.18 7.9" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "33" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "-0.01 3.89 11.66" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "34" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "2.35 3.05 10.06" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "35" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "5.6 2.67 12.82" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "36" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "1.96 3.75 4.03" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "37" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "1.82 0.29 10.67" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "38" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "5.99 5.28 7.75" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "39" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "3.8 5.12 5.74" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "40" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "5.86 1.09 1.41" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "41" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "-0.0 1.61 9.08" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "42" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "3.51 0.25 3.01" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_O" > 
+                 </Appearance> 
+                 <Text string = "43" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.33" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "3.92 3.91 4.25" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_Ti" > 
+                 </Appearance> 
+                 <Text string = "8" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.8" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "5.84 4.1 11.51" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_Ti" > 
+                 </Appearance> 
+                 <Text string = "9" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.8" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "3.88 1.31 1.58" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_Ti" > 
+                 </Appearance> 
+                 <Text string = "10" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.8" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "-0.04 3.94 4.21" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_Ti" > 
+                 </Appearance> 
+                 <Text string = "11" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.8" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "0.02 1.3 1.56" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_Ti" > 
+                 </Appearance> 
+                 <Text string = "12" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.8" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "1.97 4.11 11.49" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_Ti" > 
+                 </Appearance> 
+                 <Text string = "13" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.8" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "1.94 1.12 8.82" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_Ti" > 
+                 </Appearance> 
+                 <Text string = "14" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.8" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "5.9 1.15 8.87" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_Ti" > 
+                 </Appearance> 
+                 <Text string = "15" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "0.8" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "5.84 0.83 5.5" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_La" > 
+                 </Appearance> 
+                 <Text string = "0" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "1.035" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "0.01 3.63 7.57" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_La" > 
+                 </Appearance> 
+                 <Text string = "1" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "1.035" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "1.98 1.09 5.09" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_La" > 
+                 </Appearance> 
+                 <Text string = "2" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "1.035" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "0.0 1.33 11.82" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_La" > 
+                 </Appearance> 
+                 <Text string = "3" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "1.035" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "3.9 1.37 11.55" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_La" > 
+                 </Appearance> 
+                 <Text string = "4" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "1.035" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "3.88 3.89 7.98" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_La" > 
+                 </Appearance> 
+                 <Text string = "5" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "1.035" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "1.96 4.17 1.52" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_La" > 
+                 </Appearance> 
+                 <Text string = "6" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "1.035" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+           <Transform translation = "5.85 4.13 1.25" > 
+             <Billboard axisOfRotation = "0 0 0" > 
+               <Shape > 
+                 <Appearance USE = "text_app_La" > 
+                 </Appearance> 
+                 <Text string = "7" solid = "true" > 
+                   <Fontstyle DEF = "st_label" family = "SANS" size = "1.035" > 
+                   </Fontstyle> 
+                 </Text> 
+               </Shape> 
+             </Billboard> 
+           </Transform> 
+         </Group> 
+       </Switch> 
+       <Shape > 
+         <IndexedLineSet coordIndex = "0 1 -1 0 2 -1 0 4 -1 1 3 -1 1 5 -1 2 3 -1 2 6 -1 3 7 -1 4 5 -1 4 6 -1 5 7 -1 6 7 -1" > 
+           <Coordinate point = "[[ 0.        0.        0.       -1.961199  0.       13.072791  0.
+   5.597527  0.       -1.961199  5.597527 13.072791  7.81718   0.
+   0.        5.855981  0.       13.072791  7.81718   5.597527  0.
+   5.855981  5.597527 13.072791]]" > 
+           </Coordinate> 
+         </IndexedLineSet> 
+         <Appearance > 
+           <Material diffuseColor = "0 0 0" emissiveColor = "0 0.5 1" > 
+           </Material> 
+         </Appearance> 
+       </Shape> 
+       <Switch whichChoice = "-1" > 
+         <Shape DEF = "O" > 
+           <Appearance > 
+             <Material diffuseColor = "1.0 0.051 0.051" transparency = "0.01" > 
+             </Material> 
+           </Appearance> 
+           <Cylinder height = "1.0" radius = "0.1" subdivision = "8" > 
+           </Cylinder> 
+         </Shape> 
+       </Switch> 
+       <Switch whichChoice = "-1" > 
+         <Shape DEF = "Ti" > 
+           <Appearance > 
+             <Material diffuseColor = "0.749 0.761 0.78" transparency = "0.01" > 
+             </Material> 
+           </Appearance> 
+           <Cylinder height = "1.0" radius = "0.1" subdivision = "8" > 
+           </Cylinder> 
+         </Shape> 
+       </Switch> 
+       <Switch whichChoice = "-1" > 
+         <Shape DEF = "La" > 
+           <Appearance > 
+             <Material diffuseColor = "0.439 0.831 1.0" transparency = "0.01" > 
+             </Material> 
+           </Appearance> 
+           <Cylinder height = "1.0" radius = "0.1" subdivision = "8" > 
+           </Cylinder> 
+         </Shape> 
+       </Switch> 
+       <Switch id = "bs_e9dd4b61" whichChoice = "-1" > 
+         <Group > 
+           <Transform translation = "0.09 4.79 6.11" scale = "1 1.25 1" rotation = "-0.9987 0.0 -0.0505 0.9005" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.58 5.56 5.49" scale = "1 1.23 1" rotation = "0.2745 -0.0 0.9616 2.2308" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.41 5.49 5.59" scale = "1 1.22 1" rotation = "0.0594 0.0 -0.9982 2.1096" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.08 4.87 5.27" scale = "1 0.94 1" rotation = "0.9943 -0.0 -0.107 0.8569" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.26 2.69 7.48" scale = "1 1.22 1" rotation = "-0.0594 -0.0 0.9982 2.1096" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.78 2.07 7.8" scale = "1 0.94 1" rotation = "-0.9943 0.0 0.107 0.8569" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.28 2.76 7.58" scale = "1 1.23 1" rotation = "-0.2745 0.0 -0.9616 2.2308" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.77 1.99 6.96" scale = "1 1.25 1" rotation = "0.9987 -0.0 0.0505 0.9005" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.86 4.91 4.37" scale = "1 1.26 1" rotation = "-0.9999 0.0 -0.0126 2.5008" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.34 4.29 4.04" scale = "1 0.99 1" rotation = "-0.1127 -0.0 0.9936 1.3365" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.37 4.28 4.06" scale = "1 1.01 1" rotation = "-0.1353 0.0 -0.9908 1.3258" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.86 4.34 3.3" scale = "1 1.38 1" rotation = "1.0 -0.0 -0.0025 1.4708" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.6 3.33 2.13" scale = "1 1.21 1" rotation = "0.5404 0.0 -0.8414 2.0275" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.1 2.62 2.21" scale = "1 0.99 1" rotation = "0.9839 -0.0 0.1787 0.4606" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.12 3.29 2.87" scale = "1 1.0 1" rotation = "-0.9984 0.0 0.0571 2.0274" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.38 3.34 2.2" scale = "1 1.27 1" rotation = "0.3939 -0.0 0.9192 2.0212" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.04 2.01 6.77" scale = "1 1.28 1" rotation = "0.9994 -0.0 -0.0336 1.0691" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.51 2.71 7.5" scale = "1 1.24 1" rotation = "-0.3357 -0.0 0.942 2.2525" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.03 2.02 7.7" scale = "1 0.96 1" rotation = "-0.9969 0.0 -0.0782 0.8912" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.55 2.65 7.39" scale = "1 1.22 1" rotation = "-0.1168 0.0 -0.9932 2.1391" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.44 1.65 1.29" scale = "1 1.01 1" rotation = "-0.1965 -0.0 0.9805 1.3413" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.47 1.65 1.29" scale = "1 1.01 1" rotation = "-0.1848 0.0 -0.9828 1.3378" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.95 2.37 1.28" scale = "1 1.21 1" rotation = "-1.0 0.0 0.0094 3.006" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.96 1.66 0.58" scale = "1 1.24 1" rotation = "1.0 -0.0 0.004 1.3944" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.95 0.97 1.28" scale = "1 1.61 1" rotation = "-1.0 0.0 0.0094 0.1022" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.28 -0.25 3.28" scale = "1 1.14 1" rotation = "-0.9444 0.0 -0.3289 0.6123" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.78 -0.2 2.61" scale = "1 1.35 1" rotation = "0.6786 -0.0 0.7345 0.9139" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.79 0.43 3.5" scale = "1 1.4 1" rotation = "-0.8007 -0.0 0.599 1.889" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.3 0.49 2.62" scale = "1 0.91 1" rotation = "0.966 -0.0 -0.2585 2.2101" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.4 2.13 5.27" scale = "1 1.27 1" rotation = "0.1104 -0.0 0.9939 0.9903" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.11 2.85 5.05" scale = "1 0.92 1" rotation = "0.9967 -0.0 0.0807 2.4878" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.59 2.07 5.37" scale = "1 1.24 1" rotation = "-0.094 0.0 -0.9956 0.8442" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.09 2.77 5.89" scale = "1 1.27 1" rotation = "-0.9979 0.0 0.0641 2.0429" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.23 5.14 0.59" scale = "1 1.24 1" rotation = "-0.5904 0.0 -0.8071 1.0184" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.21 5.13 0.52" scale = "1 1.37 1" rotation = "-0.4049 -0.0 0.9144 1.0624" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.71 5.83 0.6" scale = "1 0.98 1" rotation = "-0.9852 0.0 0.1717 2.3976" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.73 5.13 -0.19" scale = "1 1.16 1" rotation = "0.9892 -0.0 0.1465 0.9438" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.21 5.84 -0.17" scale = "1 1.61 1" rotation = "0.6329 -0.0 0.7742 2.056" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.23 5.83 -0.1" scale = "1 1.35 1" rotation = "0.6702 0.0 -0.7422 2.1401" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.14 3.03 12.47" scale = "1 0.98 1" rotation = "0.9852 -0.0 -0.1717 2.3976" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.62 2.34 12.48" scale = "1 1.24 1" rotation = "0.5903 -0.0 0.8071 1.0184" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.65 2.33 12.55" scale = "1 1.37 1" rotation = "0.4049 0.0 -0.9144 1.0624" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.62 3.03 13.18" scale = "1 1.35 1" rotation = "-0.6702 -0.0 0.7422 2.1401" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.65 3.04 13.24" scale = "1 1.61 1" rotation = "-0.6329 0.0 -0.7742 2.056" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.13 2.33 13.26" scale = "1 1.16 1" rotation = "-0.9892 0.0 -0.1465 0.9438" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.02 2.77 4.94" scale = "1 0.89 1" rotation = "0.9897 -0.0 -0.1431 2.5959" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.53 2.06 5.15" scale = "1 1.22 1" rotation = "0.0402 0.0 -0.9992 1.0115" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.5 2.0 5.26" scale = "1 1.2 1" rotation = "-0.1787 -0.0 0.9839 0.8649" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.01 2.76 5.88" scale = "1 1.59 1" rotation = "-0.9981 0.0 -0.0618 2.0612" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.47 0.54 10.88" scale = "1 1.27 1" rotation = "-0.3939 0.0 -0.9192 2.0212" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.97 0.49 10.21" scale = "1 1.0 1" rotation = "0.9984 -0.0 -0.0571 2.0274" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.96 -0.17 10.87" scale = "1 0.99 1" rotation = "-0.9839 0.0 -0.1786 0.4606" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.45 0.53 10.94" scale = "1 1.21 1" rotation = "-0.5404 -0.0 0.8414 2.0275" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.89 1.69 8.78" scale = "1 1.56 1" rotation = "0.9998 -0.0 -0.021 2.7942" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.9 1.06 9.67" scale = "1 1.27 1" rotation = "-1.0 0.0 0.0004 1.7361" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.41 0.99 8.99" scale = "1 0.99 1" rotation = "0.1146 0.0 -0.9934 1.6532" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.4 1.0 9.0" scale = "1 1.01 1" rotation = "0.0889 -0.0 0.996 1.6666" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.89 0.29 8.78" scale = "1 1.43 1" rotation = "0.9998 -0.0 -0.021 0.3795" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.68 5.15 0.57" scale = "1 1.25 1" rotation = "-0.5983 -0.0 0.8013 1.0205" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.3 5.85 -0.19" scale = "1 1.6 1" rotation = "0.6256 0.0 -0.7802 2.0562" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.19 5.13 -0.2" scale = "1 1.14 1" rotation = "0.9891 -0.0 -0.147 0.9259" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.3 5.14 0.5" scale = "1 1.39 1" rotation = "-0.4114 0.0 -0.9115 1.0661" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.19 5.83 0.58" scale = "1 0.97 1" rotation = "-0.9838 0.0 -0.1791 2.3899" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.68 5.84 -0.13" scale = "1 1.35 1" rotation = "0.6597 -0.0 0.7515 2.1397" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.49 3.35 2.11" scale = "1 1.19 1" rotation = "0.5354 -0.0 0.8446 2.0218" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.01 3.3 2.86" scale = "1 1.02 1" rotation = "-0.9978 0.0 -0.0668 1.9878" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.52 3.36 2.18" scale = "1 1.25 1" rotation = "0.3881 0.0 -0.9216 2.0159" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.0 2.64 2.2" scale = "1 0.98 1" rotation = "0.9822 -0.0 -0.1878 0.4372" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.9 4.46 12.49" scale = "1 1.24 1" rotation = "-1.0 0.0 -0.004 1.3944" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.39 4.45 11.79" scale = "1 1.01 1" rotation = "0.1848 -0.0 0.9828 1.3378" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.42 4.45 11.78" scale = "1 1.01 1" rotation = "0.1965 0.0 -0.9805 1.3413" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.9 5.17 11.8" scale = "1 1.21 1" rotation = "1.0 -0.0 -0.0094 3.006" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.9 3.77 11.8" scale = "1 1.61 1" rotation = "1.0 -0.0 -0.0094 0.1022" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.57 2.55 9.8" scale = "1 1.14 1" rotation = "0.9444 -0.0 0.3289 0.6123" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.56 3.28 10.46" scale = "1 0.91 1" rotation = "-0.966 0.0 0.2585 2.2101" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.07 2.6 10.47" scale = "1 1.35 1" rotation = "-0.6786 0.0 -0.7345 0.9139" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.07 3.23 9.57" scale = "1 1.4 1" rotation = "0.8007 0.0 -0.599 1.889" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.84 5.57 8.13" scale = "1 0.89 1" rotation = "-0.9897 0.0 0.1431 2.5959" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.32 4.86 7.92" scale = "1 1.22 1" rotation = "-0.0402 -0.0 0.9992 1.0115" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.36 4.79 7.82" scale = "1 1.2 1" rotation = "0.1787 0.0 -0.9839 0.8649" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.85 5.56 7.2" scale = "1 1.59 1" rotation = "0.9981 -0.0 0.0618 2.0612" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.0 4.65 11.7" scale = "1 1.52 1" rotation = "-0.9989 0.0 0.0478 3.0883" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.0 3.96 12.39" scale = "1 1.47 1" rotation = "-1.0 0.0 0.0003 1.6655" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.5 3.94 11.62" scale = "1 0.99 1" rotation = "0.074 0.0 -0.9973 1.6753" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.49 3.94 11.62" scale = "1 1.0 1" rotation = "0.085 -0.0 0.9964 1.679" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.0 3.25 11.7" scale = "1 1.28 1" rotation = "-0.9989 0.0 0.0479 0.0632" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.25 2.57 9.75" scale = "1 1.17 1" rotation = "0.9504 -0.0 -0.3111 0.5956" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.25 3.31 10.42" scale = "1 0.91 1" rotation = "-0.9671 0.0 -0.2544 2.192" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.74 2.63 10.44" scale = "1 1.36 1" rotation = "-0.6918 -0.0 0.7221 0.9076" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.73 3.26 9.54" scale = "1 1.36 1" rotation = "0.806 -0.0 0.5919 1.8842" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.16 3.05 13.27" scale = "1 1.6 1" rotation = "-0.6256 -0.0 0.7802 2.0562" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.67 2.33 13.27" scale = "1 1.14 1" rotation = "-0.9891 0.0 0.147 0.9259" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.16 2.34 12.57" scale = "1 1.39 1" rotation = "0.4114 -0.0 0.9115 1.0661" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.17 3.04 13.2" scale = "1 1.35 1" rotation = "-0.6597 0.0 -0.7515 2.1397" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.66 3.03 12.5" scale = "1 0.97 1" rotation = "0.9838 -0.0 0.1791 2.3899" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.18 2.35 12.5" scale = "1 1.25 1" rotation = "0.5983 0.0 -0.8013 1.0205" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.96 3.09 4.29" scale = "1 1.43 1" rotation = "-0.9998 0.0 0.021 0.3795" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.46 3.8 4.07" scale = "1 1.01 1" rotation = "-0.0889 0.0 -0.996 1.6666" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.45 3.79 4.09" scale = "1 0.99 1" rotation = "-0.1146 -0.0 0.9934 1.6532" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.96 3.86 3.4" scale = "1 1.27 1" rotation = "1.0 -0.0 -0.0004 1.7361" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.96 4.48 4.29" scale = "1 1.56 1" rotation = "-0.9998 0.0 0.021 2.7942" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.36 0.55 10.96" scale = "1 1.19 1" rotation = "-0.5354 0.0 -0.8446 2.0218" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.85 0.5 10.21" scale = "1 1.02 1" rotation = "0.9978 -0.0 0.0668 1.9878" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.34 0.56 10.89" scale = "1 1.25 1" rotation = "-0.3881 -0.0 0.9216 2.0159" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.85 -0.15 10.88" scale = "1 0.98 1" rotation = "-0.9822 0.0 0.1878 0.4372" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.96 5.64 8.03" scale = "1 0.92 1" rotation = "-0.9967 0.0 -0.0807 2.4878" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.46 4.93 7.81" scale = "1 1.27 1" rotation = "-0.1104 0.0 -0.9939 0.9903" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.95 5.57 7.19" scale = "1 1.27 1" rotation = "0.9979 -0.0 -0.0641 2.0429" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.45 4.87 7.7" scale = "1 1.24 1" rotation = "0.094 -0.0 0.9956 0.8442" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 4.82 5.37" scale = "1 0.96 1" rotation = "0.9969 -0.0 0.0782 0.8912" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.35 5.51 5.58" scale = "1 1.24 1" rotation = "0.3357 0.0 -0.942 2.2525" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.31 5.45 5.68" scale = "1 1.22 1" rotation = "0.1168 -0.0 0.9932 2.1391" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.82 4.81 6.3" scale = "1 1.28 1" rotation = "-0.9994 0.0 0.0336 1.0691" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.35 1.14 1.45" scale = "1 0.99 1" rotation = "-0.074 -0.0 0.9973 1.6753" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.86 0.45 1.37" scale = "1 1.28 1" rotation = "0.9989 -0.0 -0.0478 0.0632" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.86 1.16 0.68" scale = "1 1.47 1" rotation = "1.0 -0.0 -0.0003 1.6655" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.86 1.85 1.37" scale = "1 1.52 1" rotation = "0.9989 -0.0 -0.0479 3.0883" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.37 1.15 1.45" scale = "1 1.0 1" rotation = "-0.085 0.0 -0.9964 1.679" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.0 1.54 9.77" scale = "1 1.38 1" rotation = "-1.0 0.0 0.0025 1.4708" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.0 2.11 8.71" scale = "1 1.26 1" rotation = "0.9999 -0.0 0.0126 2.5008" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.48 1.48 9.02" scale = "1 1.01 1" rotation = "0.1353 -0.0 0.9908 1.3258" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.48 1.49 9.03" scale = "1 0.99 1" rotation = "0.1127 0.0 -0.9936 1.3365" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.12 -0.17 2.64" scale = "1 1.36 1" rotation = "0.6918 0.0 -0.7221 0.9076" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.61 -0.23 3.32" scale = "1 1.17 1" rotation = "-0.9504 0.0 0.3112 0.5956" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.6 0.51 2.65" scale = "1 0.91 1" rotation = "0.9671 -0.0 0.2544 2.192" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.13 0.46 3.53" scale = "1 1.36 1" rotation = "-0.806 0.0 -0.5919 1.8842" > 
+             <Shape USE = "O" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.91 3.91 5.19" scale = "1 1.86 1" rotation = "-0.9999 0.0 -0.011 1.5634" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.43 4.61 4.46" scale = "1 1.74 1" rotation = "-0.3963 0.0 -0.9181 2.491" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.81 4.4 3.94" scale = "1 1.17 1" rotation = "0.9504 -0.0 -0.3112 2.546" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.4 4.54 4.57" scale = "1 1.7 1" rotation = "-0.543 -0.0 0.8397 2.4027" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.4 4.04 4.19" scale = "1 1.01 1" rotation = "0.1353 -0.0 0.9908 1.8158" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.95 3.53 4.48" scale = "1 0.89 1" rotation = "-0.9897 0.0 0.1431 0.5456" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.95 3.71 3.79" scale = "1 1.02 1" rotation = "0.9978 -0.0 0.0668 1.1538" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.43 3.87 4.2" scale = "1 0.99 1" rotation = "0.1146 0.0 -0.9934 1.4884" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.89 4.21 4.63" scale = "1 0.96 1" rotation = "-0.9969 0.0 -0.0782 2.2504" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.43 3.21 4.46" scale = "1 1.76 1" rotation = "-0.3963 0.0 -0.9181 0.6411" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.91 3.26 3.59" scale = "1 1.87 1" rotation = "0.9999 -0.0 -0.0121 0.798" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.43 3.98 3.57" scale = "1 1.69 1" rotation = "0.8126 -0.0 -0.5828 1.6466" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.4 3.97 3.5" scale = "1 1.79 1" rotation = "0.8404 -0.0 0.5419 1.6311" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.4 3.14 4.57" scale = "1 1.92 1" rotation = "-0.543 -0.0 0.8397 0.6394" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.34 4.81 11.59" scale = "1 1.73 1" rotation = "-0.1537 -0.0 0.9881 2.5259" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.35 4.11 12.22" scale = "1 1.71 1" rotation = "-0.8218 0.0 -0.5698 1.5802" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.91 4.44 11.97" scale = "1 1.14 1" rotation = "-0.9891 0.0 0.147 2.2157" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.78 3.74 11.84" scale = "1 0.97 1" rotation = "-0.9838 0.0 -0.1791 0.7517" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.75 3.83 11.16" scale = "1 0.91 1" rotation = "0.966 -0.0 -0.2585 0.9315" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.36 3.42 11.52" scale = "1 1.67 1" rotation = "-0.0189 0.0 -0.9998 0.6188" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.35 4.04 10.63" scale = "1 2.02 1" rotation = "0.8739 -0.0 -0.4862 1.5186" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.36 4.21 11.61" scale = "1 1.01 1" rotation = "-0.1848 0.0 -0.9828 1.8038" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.36 4.82 11.52" scale = "1 1.73 1" rotation = "-0.0189 0.0 -0.9998 2.5468" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.88 4.54 11.3" scale = "1 0.99 1" rotation = "0.9839 -0.0 0.1786 2.681" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.85 4.76 10.85" scale = "1 1.87 1" rotation = "0.9998 -0.0 0.0206 2.3555" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.34 3.41 11.59" scale = "1 1.71 1" rotation = "-0.1537 -0.0 0.9881 0.6266" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.33 4.05 11.55" scale = "1 0.99 1" rotation = "-0.074 -0.0 0.9973 1.4663" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.33 4.12 12.28" scale = "1 1.83 1" rotation = "-0.8422 0.0 0.5391 1.5904" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.92 1.75 1.79" scale = "1 0.98 1" rotation = "-0.9822 0.0 0.1878 2.7044" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.79 1.04 1.94" scale = "1 0.91 1" rotation = "-0.9671 0.0 -0.2544 0.9496" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.41 1.25 2.46" scale = "1 2.0 1" rotation = "-0.8789 0.0 -0.4769 1.5159" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.4 2.02 1.57" scale = "1 1.73 1" rotation = "0.0306 0.0 -0.9995 2.5487" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.89 1.96 2.25" scale = "1 1.87 1" rotation = "-0.9999 0.0 0.0121 2.3436" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.38 2.01 1.5" scale = "1 1.73 1" rotation = "0.1655 -0.0 0.9862 2.526" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.38 1.32 0.81" scale = "1 1.84 1" rotation = "0.8436 -0.0 0.537 1.588" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.4 1.42 1.48" scale = "1 1.01 1" rotation = "0.1965 0.0 -0.9805 1.8003" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.4 1.31 0.87" scale = "1 1.71 1" rotation = "0.8276 -0.0 -0.5613 1.5778" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.38 1.25 1.54" scale = "1 1.0 1" rotation = "0.085 -0.0 0.9964 1.4626" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.38 0.61 1.5" scale = "1 1.71 1" rotation = "0.1654 -0.0 0.9862 0.6237" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.4 0.62 1.57" scale = "1 1.67 1" rotation = "0.0306 0.0 -0.9995 0.614" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 0.95 1.26" scale = "1 0.98 1" rotation = "0.9852 -0.0 -0.1717 0.744" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.95 1.65 1.12" scale = "1 1.16 1" rotation = "0.9892 -0.0 0.1465 2.1978" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.52 4.57 4.53" scale = "1 1.7 1" rotation = "-0.5551 0.0 -0.8318 2.3889" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.46 4.0 3.54" scale = "1 1.68 1" rotation = "0.8025 -0.0 0.5967 1.638" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.06 3.58 4.49" scale = "1 0.92 1" rotation = "-0.9967 0.0 -0.0807 0.6538" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.06 3.72 3.76" scale = "1 1.0 1" rotation = "0.9984 -0.0 -0.0571 1.1142" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.0 4.25 4.56" scale = "1 0.94 1" rotation = "-0.9943 0.0 0.107 2.2847" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.03 3.28 3.54" scale = "1 1.87 1" rotation = "0.9998 -0.0 0.0206 0.7861" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.47 3.23 4.43" scale = "1 1.8 1" rotation = "-0.4009 -0.0 0.9161 0.6573" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.46 3.9 4.16" scale = "1 1.01 1" rotation = "0.0889 -0.0 0.996 1.475" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.52 4.06 4.15" scale = "1 0.99 1" rotation = "0.1127 0.0 -0.9936 1.8051" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.52 3.99 3.47" scale = "1 1.77 1" rotation = "0.838 -0.0 -0.5456 1.6234" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.47 4.63 4.43" scale = "1 1.76 1" rotation = "-0.4009 -0.0 0.9161 2.4643" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.03 3.87 5.05" scale = "1 1.69 1" rotation = "-0.9999 0.0 0.016 1.478" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.52 3.17 4.53" scale = "1 1.94 1" rotation = "-0.5551 0.0 -0.8318 0.6423" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.07 4.41 3.9" scale = "1 1.14 1" rotation = "0.9444 -0.0 0.3289 2.5293" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.07 0.94 1.23" scale = "1 0.97 1" rotation = "0.9838 -0.0 0.1791 0.7517" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.5 0.62 1.55" scale = "1 1.67 1" rotation = "0.0189 -0.0 0.9998 0.6188" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.48 1.32 0.79" scale = "1 1.83 1" rotation = "0.8422 -0.0 -0.5391 1.5904" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.05 1.64 1.11" scale = "1 1.14 1" rotation = "0.9891 -0.0 -0.147 2.2157" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.48 0.61 1.48" scale = "1 1.71 1" rotation = "0.1537 0.0 -0.9881 0.6266" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.5 1.31 0.86" scale = "1 1.71 1" rotation = "0.8218 -0.0 0.5698 1.5802" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.48 2.01 1.48" scale = "1 1.73 1" rotation = "0.1537 0.0 -0.9881 2.5259" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.48 1.25 1.52" scale = "1 0.99 1" rotation = "0.074 0.0 -0.9973 1.4663" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.5 2.02 1.55" scale = "1 1.73 1" rotation = "0.0189 -0.0 0.9998 2.5468" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.0 1.96 2.22" scale = "1 1.87 1" rotation = "-0.9998 0.0 -0.0206 2.3555" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.51 1.25 2.44" scale = "1 2.02 1" rotation = "-0.8739 0.0 0.4862 1.5186" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.5 1.42 1.47" scale = "1 1.01 1" rotation = "0.1848 -0.0 0.9828 1.8038" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.02 1.74 1.77" scale = "1 0.99 1" rotation = "-0.9839 0.0 -0.1787 2.681" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.11 1.03 1.91" scale = "1 0.91 1" rotation = "-0.966 0.0 0.2585 0.9315" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.03 3.75 11.82" scale = "1 0.98 1" rotation = "-0.9852 0.0 0.1717 0.744" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.45 4.22 11.59" scale = "1 1.01 1" rotation = "-0.1965 -0.0 0.9805 1.8003" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.48 4.81 11.57" scale = "1 1.73 1" rotation = "-0.1654 0.0 -0.9862 2.526" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.93 4.55 11.29" scale = "1 0.98 1" rotation = "0.9822 -0.0 -0.1878 2.7044" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.96 4.76 10.82" scale = "1 1.87 1" rotation = "0.9999 -0.0 -0.0121 2.3436" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.45 4.82 11.51" scale = "1 1.73 1" rotation = "-0.0306 -0.0 0.9995 2.5487" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.45 4.05 10.61" scale = "1 2.0 1" rotation = "0.8789 -0.0 0.4769 1.5159" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.9 4.45 11.96" scale = "1 1.16 1" rotation = "-0.9892 0.0 -0.1465 2.1978" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.45 3.42 11.51" scale = "1 1.67 1" rotation = "-0.0306 -0.0 0.9995 0.614" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.48 4.12 12.27" scale = "1 1.84 1" rotation = "-0.8436 0.0 -0.537 1.588" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.45 4.11 12.2" scale = "1 1.71 1" rotation = "-0.8276 0.0 0.5613 1.5778" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.48 4.05 11.53" scale = "1 1.0 1" rotation = "-0.085 0.0 -0.9964 1.4626" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.07 3.84 11.13" scale = "1 0.91 1" rotation = "0.9671 -0.0 0.2544 0.9496" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.48 3.41 11.57" scale = "1 1.71 1" rotation = "-0.1655 0.0 -0.9862 0.6237" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.95 1.11 7.89" scale = "1 1.86 1" rotation = "0.9999 -0.0 0.011 1.5634" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.46 0.34 8.51" scale = "1 1.92 1" rotation = "0.543 0.0 -0.8397 0.6394" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 0.73 8.59" scale = "1 0.89 1" rotation = "0.9897 -0.0 -0.1431 0.5456" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.42 0.41 8.61" scale = "1 1.76 1" rotation = "0.3963 -0.0 0.9181 0.6411" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.95 0.46 9.49" scale = "1 1.87 1" rotation = "-0.9999 0.0 0.0121 0.798" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.46 1.17 9.57" scale = "1 1.79 1" rotation = "-0.8404 0.0 -0.5419 1.6311" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.04 1.6 9.13" scale = "1 1.17 1" rotation = "-0.9504 0.0 0.3111 2.546" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 0.91 9.28" scale = "1 1.02 1" rotation = "-0.9978 0.0 -0.0668 1.1538" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.46 1.74 8.51" scale = "1 1.7 1" rotation = "0.543 0.0 -0.8397 2.4027" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.43 1.18 9.5" scale = "1 1.69 1" rotation = "-0.8126 0.0 0.5828 1.6466" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.42 1.81 8.61" scale = "1 1.74 1" rotation = "0.3963 -0.0 0.9181 2.491" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.45 1.24 8.88" scale = "1 1.01 1" rotation = "-0.1353 0.0 -0.9908 1.8158" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.97 1.42 8.45" scale = "1 0.96 1" rotation = "0.9969 -0.0 0.0782 2.2504" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.43 1.07 8.87" scale = "1 0.99 1" rotation = "-0.1146 -0.0 0.9934 1.4884" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.39 0.43 8.64" scale = "1 1.8 1" rotation = "0.4009 0.0 -0.9161 0.6573" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.92 0.78 8.59" scale = "1 0.92 1" rotation = "0.9967 -0.0 0.0807 0.6538" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.88 0.48 9.53" scale = "1 1.87 1" rotation = "-0.9998 0.0 -0.0206 0.7861" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.38 0.37 8.54" scale = "1 1.94 1" rotation = "0.5551 -0.0 0.8318 0.6423" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.86 1.45 8.51" scale = "1 0.94 1" rotation = "0.9943 -0.0 -0.107 2.2847" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.92 0.93 9.31" scale = "1 1.0 1" rotation = "-0.9984 0.0 0.0571 1.1142" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.39 1.83 8.64" scale = "1 1.76 1" rotation = "0.4009 0.0 -0.9161 2.4643" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.4 1.2 9.54" scale = "1 1.68 1" rotation = "-0.8025 0.0 -0.5967 1.638" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.4 1.1 8.91" scale = "1 1.01 1" rotation = "-0.0889 0.0 -0.996 1.475" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.79 1.61 9.18" scale = "1 1.14 1" rotation = "-0.9444 0.0 -0.3289 2.5293" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.38 1.19 9.6" scale = "1 1.77 1" rotation = "-0.838 0.0 0.5456 1.6234" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.38 1.77 8.54" scale = "1 1.7 1" rotation = "0.5551 -0.0 0.8318 2.3889" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.37 1.26 8.92" scale = "1 0.99 1" rotation = "-0.1127 -0.0 0.9936 1.8051" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.88 1.07 8.02" scale = "1 1.69 1" rotation = "0.9999 -0.0 -0.016 1.478" > 
+             <Shape USE = "Ti" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.35 0.2 6.12" scale = "1 2.03 1" rotation = "-0.7841 0.0 -0.6207 0.8942" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.88 0.54 6.06" scale = "1 1.27 1" rotation = "-0.9979 0.0 0.0641 1.0987" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.34 1.53 6.02" scale = "1 2.01 1" rotation = "-0.7215 -0.0 0.6924 2.3428" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.34 0.13 6.02" scale = "1 2.01 1" rotation = "-0.7215 -0.0 0.6924 0.7988" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.85 0.91 6.34" scale = "1 1.69 1" rotation = "-0.9999 0.0 0.016 1.6636" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.82 1.22 5.99" scale = "1 1.25 1" rotation = "-0.9987 0.0 -0.0505 2.241" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.35 1.6 6.12" scale = "1 2.2 1" rotation = "-0.7841 0.0 -0.6207 2.3381" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.39 1.22 5.42" scale = "1 1.2 1" rotation = "0.1787 0.0 -0.9839 2.2767" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.33 1.61 5.18" scale = "1 1.94 1" rotation = "0.5551 -0.0 0.8318 2.4993" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.83 0.9 5.4" scale = "1 1.99 1" rotation = "0.1028 -0.0 0.9947 1.635" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.3 1.24 5.46" scale = "1 1.24 1" rotation = "0.094 -0.0 0.9956 2.2974" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.36 1.6 5.19" scale = "1 1.92 1" rotation = "0.543 0.0 -0.8397 2.5022" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.88 0.9 5.4" scale = "1 1.95 1" rotation = "0.1053 0.0 -0.9944 1.6366" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.36 0.2 5.19" scale = "1 1.7 1" rotation = "0.543 0.0 -0.8397 0.7389" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.85 0.33 5.12" scale = "1 1.26 1" rotation = "0.9999 -0.0 0.0126 0.6408" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.33 0.5 5.56" scale = "1 1.22 1" rotation = "-0.1168 0.0 -0.9932 1.0025" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.36 0.52 5.53" scale = "1 1.22 1" rotation = "-0.0594 -0.0 0.9982 1.032" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.33 0.21 5.18" scale = "1 1.7 1" rotation = "0.5551 -0.0 0.8318 0.7527" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.48 2.93 7.05" scale = "1 2.01 1" rotation = "0.7215 0.0 -0.6924 0.7988" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.51 4.39 6.95" scale = "1 2.2 1" rotation = "0.7841 -0.0 0.6207 2.3381" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.46 4.02 7.65" scale = "1 1.2 1" rotation = "-0.1787 -0.0 0.9839 2.2767" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.5 3.0 7.88" scale = "1 1.7 1" rotation = "-0.543 -0.0 0.8397 0.7389" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.98 3.69 7.68" scale = "1 1.95 1" rotation = "-0.1053 -0.0 0.9944 1.6366" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.01 3.12 7.95" scale = "1 1.26 1" rotation = "-0.9999 0.0 -0.0126 0.6408" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.52 3.3 7.51" scale = "1 1.22 1" rotation = "0.1168 -0.0 0.9932 1.0025" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.47 3.01 7.9" scale = "1 1.7 1" rotation = "-0.5551 0.0 -0.8318 0.7527" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.47 4.41 7.9" scale = "1 1.94 1" rotation = "-0.5551 0.0 -0.8318 2.4993" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.51 3.32 7.54" scale = "1 1.22 1" rotation = "0.0594 0.0 -0.9982 1.032" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.5 4.4 7.88" scale = "1 1.92 1" rotation = "-0.543 -0.0 0.8397 2.5022" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.45 4.04 7.62" scale = "1 1.24 1" rotation = "-0.094 0.0 -0.9956 2.2974" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.97 3.69 7.68" scale = "1 1.99 1" rotation = "-0.1028 0.0 -0.9947 1.635" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.48 4.33 7.05" scale = "1 2.01 1" rotation = "0.7215 0.0 -0.6924 2.3428" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.04 4.02 7.09" scale = "1 1.25 1" rotation = "0.9987 -0.0 0.0505 2.241" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.51 3.0 6.95" scale = "1 2.03 1" rotation = "0.7841 -0.0 0.6207 0.8942" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.0 3.71 6.73" scale = "1 1.69 1" rotation = "0.9999 -0.0 -0.016 1.6636" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.02 3.34 7.01" scale = "1 1.27 1" rotation = "0.9979 -0.0 -0.0641 1.0987" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.45 0.39 5.81" scale = "1 2.22 1" rotation = "-0.8363 0.0 0.5482 0.8903" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.94 0.71 5.79" scale = "1 1.59 1" rotation = "-0.9981 0.0 -0.0618 1.0804" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.49 0.32 5.71" scale = "1 2.2 1" rotation = "-0.7841 0.0 -0.6207 0.8035" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.99 1.02 5.19" scale = "1 1.99 1" rotation = "-0.1028 0.0 -0.9947 1.5066" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.46 0.39 4.88" scale = "1 1.74 1" rotation = "0.3963 -0.0 0.9181 0.6506" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.97 0.46 4.2" scale = "1 2.18 1" rotation = "1.0 -0.0 -0.0065 0.9567" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.48 0.4 4.87" scale = "1 1.76 1" rotation = "0.4009 0.0 -0.9161 0.6773" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.44 0.7 5.25" scale = "1 1.24 1" rotation = "-0.3357 -0.0 0.942 0.8891" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.97 0.35 4.83" scale = "1 1.56 1" rotation = "0.9998 -0.0 -0.021 0.3474" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.51 0.71 5.22" scale = "1 1.23 1" rotation = "-0.2745 0.0 -0.9616 0.9108" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.49 1.72 5.71" scale = "1 2.03 1" rotation = "-0.7841 0.0 -0.6207 2.2474" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.45 1.79 5.81" scale = "1 2.22 1" rotation = "-0.8363 0.0 0.5482 2.2513" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.0 1.4 5.65" scale = "1 1.28 1" rotation = "-0.9994 0.0 0.0336 2.0724" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.97 1.09 6.02" scale = "1 1.86 1" rotation = "-0.9999 0.0 -0.011 1.5782" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.46 1.14 4.21" scale = "1 2.0 1" rotation = "0.8789 -0.0 0.4769 1.6257" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.49 1.14 4.21" scale = "1 2.02 1" rotation = "0.8739 -0.0 -0.4862 1.623" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.36 0.88 4.57" scale = "1 1.36 1" rotation = "0.806 -0.0 0.5919 1.2574" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.97 1.86 4.2" scale = "1 2.36 1" rotation = "1.0 -0.0 -0.0065 2.2831" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.5 1.41 5.11" scale = "1 1.22 1" rotation = "-0.0402 -0.0 0.9992 2.1301" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.97 1.75 4.83" scale = "1 1.43 1" rotation = "0.9998 -0.0 -0.021 2.7621" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.95 1.02 5.19" scale = "1 1.95 1" rotation = "-0.1053 -0.0 0.9944 1.505" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.46 1.79 4.88" scale = "1 1.76 1" rotation = "0.3963 -0.0 0.9181 2.5005" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.58 0.87 4.56" scale = "1 1.4 1" rotation = "0.8007 0.0 -0.599 1.2526" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.45 1.44 5.15" scale = "1 1.27 1" rotation = "-0.1104 0.0 -0.9939 2.1513" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.48 1.8 4.87" scale = "1 1.8 1" rotation = "0.4009 0.0 -0.9161 2.4843" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.98 1.34 11.75" scale = "1 1.97 1" rotation = "0.069 0.0 -0.9976 1.5809" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.45 1.06 11.53" scale = "1 1.21 1" rotation = "0.5404 0.0 -0.8414 1.1141" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.48 1.28 11.08" scale = "1 1.77 1" rotation = "0.838 -0.0 -0.5456 1.5182" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.49 2.02 11.74" scale = "1 1.71 1" rotation = "0.1537 0.0 -0.9881 2.515" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.49 2.02 11.74" scale = "1 1.71 1" rotation = "0.1655 -0.0 0.9862 2.5179" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.98 1.34 11.75" scale = "1 1.95 1" rotation = "0.0695 -0.0 0.9976 1.5809" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.49 1.28 11.07" scale = "1 1.79 1" rotation = "0.8404 -0.0 0.5419 1.5105" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.55 1.67 12.06" scale = "1 1.37 1" rotation = "-0.4049 -0.0 0.9144 2.0792" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.0 1.4 11.14" scale = "1 1.38 1" rotation = "1.0 -0.0 -0.0025 1.6708" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.55 1.67 12.07" scale = "1 1.39 1" rotation = "-0.4114 0.0 -0.9115 2.0755" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.46 1.07 11.53" scale = "1 1.19 1" rotation = "0.5354 -0.0 0.8446 1.1198" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.0 1.97 11.78" scale = "1 1.28 1" rotation = "0.9989 -0.0 -0.0479 3.0784" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.49 0.62 11.74" scale = "1 1.73 1" rotation = "0.1537 0.0 -0.9881 0.6157" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.0 1.44 12.43" scale = "1 1.24 1" rotation = "-1.0 0.0 -0.004 1.7472" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.48 1.32 12.52" scale = "1 1.71 1" rotation = "-0.8218 0.0 -0.5698 1.5614" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.48 1.33 12.53" scale = "1 1.71 1" rotation = "-0.8276 0.0 0.5613 1.5638" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.0 2.04 12.52" scale = "1 1.98 1" rotation = "-1.0 0.0 -0.0024 2.3678" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.43 0.97 12.2" scale = "1 1.35 1" rotation = "-0.6597 0.0 -0.7515 1.0019" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.43 0.97 12.2" scale = "1 1.35 1" rotation = "-0.6702 -0.0 0.7422 1.0015" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.0 0.64 12.52" scale = "1 1.96 1" rotation = "-1.0 0.0 -0.0024 0.7879" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.49 0.63 11.74" scale = "1 1.73 1" rotation = "0.1654 -0.0 0.9862 0.6156" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.0 0.57 11.78" scale = "1 1.52 1" rotation = "0.9989 -0.0 -0.0478 0.0532" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.9 0.77 11.63" scale = "1 1.21 1" rotation = "-1.0 0.0 0.0094 0.1356" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.51 1.79 11.18" scale = "1 1.36 1" rotation = "0.6918 0.0 -0.7221 2.234" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.32 1.7 11.87" scale = "1 1.25 1" rotation = "-0.5983 -0.0 0.8013 2.1211" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.92 1.36 11.62" scale = "1 1.95 1" rotation = "-0.0695 0.0 -0.9976 1.5607" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.38 1.1 11.33" scale = "1 1.25 1" rotation = "0.3881 0.0 -0.9216 1.1257" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.9 1.27 10.92" scale = "1 1.27 1" rotation = "1.0 -0.0 -0.0004 1.4055" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.9 2.17 11.63" scale = "1 1.61 1" rotation = "-1.0 0.0 0.0094 3.0393" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.4 1.31 10.88" scale = "1 1.68 1" rotation = "0.8025 -0.0 0.5967 1.5035" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.38 2.05 11.54" scale = "1 1.67 1" rotation = "0.0189 -0.0 0.9998 2.5228" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.42 1.09 11.33" scale = "1 1.27 1" rotation = "0.3939 -0.0 0.9192 1.1204" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.42 2.05 11.54" scale = "1 1.67 1" rotation = "0.0306 0.0 -0.9995 2.5275" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.89 2.0 10.66" scale = "1 2.18 1" rotation = "1.0 -0.0 -0.0065 2.1849" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.41 1.31 10.87" scale = "1 1.69 1" rotation = "0.8126 -0.0 -0.5828 1.495" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.29 1.78 11.19" scale = "1 1.35 1" rotation = "0.6786 -0.0 0.7345 2.2277" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.47 1.7 11.86" scale = "1 1.24 1" rotation = "-0.5903 0.0 -0.8071 2.1232" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.38 0.65 11.54" scale = "1 1.73 1" rotation = "0.0189 -0.0 0.9998 0.5948" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.42 0.66 11.54" scale = "1 1.73 1" rotation = "0.0306 0.0 -0.9995 0.5929" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.89 0.6 10.66" scale = "1 2.36 1" rotation = "1.0 -0.0 -0.0065 0.8585" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.41 1.35 12.33" scale = "1 1.84 1" rotation = "-0.8436 0.0 -0.537 1.5536" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.9 2.06 12.24" scale = "1 1.96 1" rotation = "-1.0 0.0 -0.0024 2.3537" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.9 1.3 12.28" scale = "1 1.47 1" rotation = "-1.0 0.0 0.0003 1.4761" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.45 1.0 11.99" scale = "1 1.6 1" rotation = "-0.6256 -0.0 0.7802 1.0854" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.9 0.66 12.24" scale = "1 1.98 1" rotation = "-1.0 0.0 -0.0024 0.7738" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.35 1.0 12.0" scale = "1 1.61 1" rotation = "-0.6329 0.0 -0.7742 1.0856" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.39 1.35 12.32" scale = "1 1.83 1" rotation = "-0.8422 0.0 0.5391 1.5512" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.88 1.36 11.62" scale = "1 1.97 1" rotation = "-0.069 -0.0 0.9976 1.5607" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.37 3.12 7.36" scale = "1 2.2 1" rotation = "0.7841 -0.0 0.6207 0.8035" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.86 4.19 7.42" scale = "1 1.28 1" rotation = "0.9994 -0.0 -0.0336 2.0724" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.92 3.51 7.28" scale = "1 1.59 1" rotation = "0.9981 -0.0 0.0618 1.0804" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.4 3.19 7.26" scale = "1 2.22 1" rotation = "0.8363 -0.0 -0.5482 0.8903" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.89 3.89 7.05" scale = "1 1.86 1" rotation = "0.9999 -0.0 0.011 1.5782" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.4 4.59 7.26" scale = "1 2.22 1" rotation = "0.8363 -0.0 -0.5482 2.2513" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.37 4.52 7.36" scale = "1 2.03 1" rotation = "0.7841 -0.0 0.6207 2.2474" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.86 3.82 7.88" scale = "1 1.99 1" rotation = "0.1028 -0.0 0.9947 1.5066" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.39 4.59 8.19" scale = "1 1.76 1" rotation = "-0.3963 0.0 -0.9181 2.5005" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.88 4.66 8.87" scale = "1 2.36 1" rotation = "-1.0 0.0 0.0065 2.2831" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.38 4.6 8.2" scale = "1 1.8 1" rotation = "-0.4009 -0.0 0.9161 2.4843" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.88 4.55 8.25" scale = "1 1.43 1" rotation = "-0.9998 0.0 0.021 2.7621" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.37 3.94 8.87" scale = "1 2.02 1" rotation = "-0.8739 0.0 0.4862 1.623" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.42 3.49 7.82" scale = "1 1.24 1" rotation = "0.3357 0.0 -0.942 0.8891" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.34 3.51 7.85" scale = "1 1.23 1" rotation = "0.2745 -0.0 0.9616 0.9108" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.38 3.2 8.2" scale = "1 1.76 1" rotation = "-0.4009 -0.0 0.9161 0.6773" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.88 3.15 8.25" scale = "1 1.56 1" rotation = "-0.9998 0.0 0.021 0.3474" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.36 4.21 7.96" scale = "1 1.22 1" rotation = "0.0402 0.0 -0.9992 2.1301" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.4 3.94 8.86" scale = "1 2.0 1" rotation = "-0.8789 0.0 -0.4769 1.6257" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.88 3.26 8.87" scale = "1 2.18 1" rotation = "-1.0 0.0 0.0065 0.9567" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.39 3.19 8.19" scale = "1 1.74 1" rotation = "-0.3963 0.0 -0.9181 0.6506" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.27 3.67 8.51" scale = "1 1.4 1" rotation = "-0.8007 -0.0 0.599 1.2526" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.49 3.68 8.5" scale = "1 1.36 1" rotation = "-0.806 0.0 -0.5919 1.2574" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.4 4.23 7.92" scale = "1 1.27 1" rotation = "0.1104 -0.0 0.9939 2.1513" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.91 3.82 7.88" scale = "1 1.95 1" rotation = "0.1053 0.0 -0.9944 1.505" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.98 4.16 1.45" scale = "1 1.97 1" rotation = "0.069 0.0 -0.9976 1.5607" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.96 4.86 0.83" scale = "1 1.96 1" rotation = "1.0 -0.0 0.0024 2.3537" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.96 4.1 0.79" scale = "1 1.47 1" rotation = "1.0 -0.0 -0.0003 1.4761" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.96 4.06 2.15" scale = "1 1.27 1" rotation = "-1.0 0.0 0.0004 1.4055" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.48 3.9 1.74" scale = "1 1.25 1" rotation = "-0.3881 -0.0 0.9216 1.1257" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.53 4.5 1.2" scale = "1 1.25 1" rotation = "0.5983 0.0 -0.8013 2.1211" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.38 4.49 1.21" scale = "1 1.24 1" rotation = "0.5904 -0.0 0.8071 2.1232" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.43 3.89 1.75" scale = "1 1.27 1" rotation = "-0.3939 0.0 -0.9192 1.1204" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.96 3.57 1.44" scale = "1 1.21 1" rotation = "1.0 -0.0 -0.0094 0.1356" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.47 3.45 1.53" scale = "1 1.73 1" rotation = "-0.0189 0.0 -0.9998 0.5948" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.96 3.4 2.41" scale = "1 2.36 1" rotation = "-1.0 0.0 0.0065 0.8585" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.46 4.11 2.19" scale = "1 1.68 1" rotation = "-0.8025 0.0 -0.5967 1.5035" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.44 3.45 1.54" scale = "1 1.73 1" rotation = "-0.0306 -0.0 0.9995 0.5929" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.45 4.11 2.21" scale = "1 1.69 1" rotation = "-0.8126 0.0 0.5828 1.495" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.93 4.16 1.45" scale = "1 1.95 1" rotation = "0.0695 -0.0 0.9976 1.5607" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.45 4.15 0.75" scale = "1 1.84 1" rotation = "0.8436 -0.0 0.537 1.5536" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.51 3.79 1.07" scale = "1 1.61 1" rotation = "0.6329 -0.0 0.7742 1.0856" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.96 3.46 0.83" scale = "1 1.98 1" rotation = "1.0 -0.0 0.0024 0.7738" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.4 3.8 1.08" scale = "1 1.6 1" rotation = "0.6256 0.0 -0.7802 1.0854" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.46 4.15 0.75" scale = "1 1.83 1" rotation = "0.8422 -0.0 -0.5391 1.5512" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.44 4.85 1.54" scale = "1 1.67 1" rotation = "-0.0306 -0.0 0.9995 2.5275" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.96 4.8 2.41" scale = "1 2.18 1" rotation = "-1.0 0.0 0.0065 2.1849" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.47 4.85 1.53" scale = "1 1.67 1" rotation = "-0.0189 0.0 -0.9998 2.5228" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.34 4.59 1.89" scale = "1 1.36 1" rotation = "-0.6918 -0.0 0.7221 2.234" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.96 4.97 1.44" scale = "1 1.61 1" rotation = "1.0 -0.0 -0.0094 3.0393" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.57 4.58 1.88" scale = "1 1.35 1" rotation = "-0.6786 0.0 -0.7345 2.2277" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.88 4.14 1.32" scale = "1 1.95 1" rotation = "-0.0695 0.0 -0.9976 1.5809" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.36 3.42 1.33" scale = "1 1.73 1" rotation = "-0.1655 0.0 -0.9862 0.6156" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.86 4.2 1.94" scale = "1 1.38 1" rotation = "-1.0 0.0 0.0025 1.6708" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.3 4.46 1.01" scale = "1 1.37 1" rotation = "0.4049 0.0 -0.9144 2.0792" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.4 3.87 1.54" scale = "1 1.19 1" rotation = "-0.5354 0.0 -0.8446 1.1198" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.83 4.14 1.32" scale = "1 1.97 1" rotation = "-0.069 -0.0 0.9976 1.5809" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.33 4.08 1.99" scale = "1 1.77 1" rotation = "-0.838 0.0 0.5456 1.5182" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.35 3.42 1.33" scale = "1 1.73 1" rotation = "-0.1537 -0.0 0.9881 0.6157" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.86 3.37 1.29" scale = "1 1.52 1" rotation = "-0.9989 0.0 0.0479 0.0532" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.31 3.86 1.54" scale = "1 1.21 1" rotation = "-0.5404 -0.0 0.8414 1.1141" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.41 4.47 1.0" scale = "1 1.39 1" rotation = "0.4114 -0.0 0.9115 2.0755" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.35 4.82 1.33" scale = "1 1.71 1" rotation = "-0.1537 -0.0 0.9881 2.515" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.86 4.77 1.29" scale = "1 1.28 1" rotation = "-0.9989 0.0 0.0478 3.0784" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.36 4.82 1.33" scale = "1 1.71 1" rotation = "-0.1654 0.0 -0.9862 2.5179" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.86 4.84 0.56" scale = "1 1.98 1" rotation = "1.0 -0.0 0.0024 2.3678" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.37 4.08 2.0" scale = "1 1.79 1" rotation = "-0.8404 0.0 -0.5419 1.5105" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.37 4.12 0.54" scale = "1 1.71 1" rotation = "0.8276 -0.0 -0.5613 1.5638" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.86 3.44 0.56" scale = "1 1.96 1" rotation = "1.0 -0.0 0.0024 0.7879" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.28 3.77 0.88" scale = "1 1.35 1" rotation = "0.6597 -0.0 0.7515 1.0019" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.43 3.76 0.87" scale = "1 1.35 1" rotation = "0.6702 0.0 -0.7422 1.0015" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "6.34 4.12 0.55" scale = "1 1.71 1" rotation = "0.8218 -0.0 0.5698 1.5614" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "5.86 4.24 0.64" scale = "1 1.24 1" rotation = "1.0 -0.0 0.004 1.7472" > 
+             <Shape USE = "La" > 
+             </Shape> 
+           </Transform> 
+         </Group> 
+       </Switch> 
+       <Switch id = "switch_marker_0_e9dd4b61" whichChoice = "-1" > 
+         <Transform id = "marker_0_e9dd4b61" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_marker_1_e9dd4b61" whichChoice = "-1" > 
+         <Transform id = "marker_1_e9dd4b61" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_marker_2_e9dd4b61" whichChoice = "-1" > 
+         <Transform id = "marker_2_e9dd4b61" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_marker_3_e9dd4b61" whichChoice = "-1" > 
+         <Transform id = "marker_3_e9dd4b61" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_marker_4_e9dd4b61" whichChoice = "-1" > 
+         <Transform id = "marker_4_e9dd4b61" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_line_0_e9dd4b61" whichChoice = "-1" > 
+         <Shape > 
+           <IndexedLineSet id = "line_ind_0_e9dd4b61" solid = "false" coordIndex = "0 1 -1" > 
+             <Coordinate id = "line_coor_0_e9dd4b61" point = "0 0 0 0 0 1" > 
+             </Coordinate> 
+           </IndexedLineSet> 
+           <Appearance > 
+             <Material diffuseColor = "0 0 0" emissiveColor = "0 0.5 1" > 
+             </Material> 
+           </Appearance> 
+         </Shape> 
+       </Switch> 
+       <Switch id = "switch_line_1_e9dd4b61" whichChoice = "-1" > 
+         <Shape > 
+           <IndexedLineSet id = "line_ind_1_e9dd4b61" solid = "false" coordIndex = "0 1 -1" > 
+             <Coordinate id = "line_coor_1_e9dd4b61" point = "0 0 0 0 0 1" > 
+             </Coordinate> 
+           </IndexedLineSet> 
+           <Appearance > 
+             <Material diffuseColor = "0 0 0" emissiveColor = "0 0.5 1" > 
+             </Material> 
+           </Appearance> 
+         </Shape> 
+       </Switch> 
+     </Scene> 
+   </X3D> 
+ </div> 
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.0.min.js" ></script>
+ <script >
+ if (atoms_dict == undefined) {var atoms_dict = {"new": true};}; 
+atoms_dict["e9dd4b61"] = {com: "2.93 2.65 6.54", 
+top_pos: "2.93 2.65 24.95", 
+front_pos: "2.93 -15.76 6.54", 
+right_pos: "21.34 2.65 6.54", 
+left_pos: "-15.49 2.65 6.54", 
+top_ori: "0 0 0 0", 
+front_ori: "1 0 0 1.57079", 
+right_ori: "0 1 0 1.57079", 
+left_ori: "0 1 0 -1.57079", 
+select: [], 
+uuid: "e9dd4b61", 
+label: "True", 
+bond: "1.0", 
+polyhedra: {}, 
+};
+
+// if (atoms_dict[uuid]['new']){
+function setQuality(uuid, quality){
+        // $('#error_'.concat(atoms_dict[uuid]['uuid'])).html('uuid: '.concat(atoms_dict[uuid]["uuid"]));
+        var x3d = 'x3dase_' + uuid;
+        document.getElementById(x3d).setAttribute('PrimitiveQuality', quality);
+    }
+function set_viewpoint(uuid, pos, ori){
+    // $('#error_'.concat(atoms_dict[uuid]['uuid'])).html('uuid: '.concat(atoms_dict[uuid]["uuid"]));
+    var persp = 'camera_persp_' + uuid;
+    var ortho = 'camera_ortho_' + uuid;
+    document.getElementById(persp).setAttribute('orientation', atoms_dict[uuid][ori]);
+    document.getElementById(persp).setAttribute('position', atoms_dict[uuid][pos]);
+    document.getElementById(ortho).setAttribute('orientation', atoms_dict[uuid][ori]);
+    document.getElementById(ortho).setAttribute('position', atoms_dict[uuid][pos]);
+}
+
+//Round a float value to x.xx format
+function roundWithTwoDecimals(value)
+{
+    var x = (Math.round(value * 100)) / 100;
+    var y = x.toFixed(2);
+    return y;
+}
+//Handle click on any group member
+function handleGroupClick(event)
+{
+    //Mark hitting point
+    var target = event.target;
+    var uuid = target.parentNode.getAttribute('uuid')
+    var radius = target.parentNode.getAttribute('radius');
+    var scale = target.parentNode.getAttribute('scale');
+    scale = parseFloat(radius)*parseFloat(scale)*1.2;
+    var scale = ' ' + scale + ' ' + scale + ' ' + scale;
+    var translation = target.parentNode.getAttribute('translation');
+    var id = target.parentNode.getAttribute('id');
+    if (window.event.ctrlKey) {
+        atoms_dict[uuid]['select'].push(id);
+
+    }
+    else {
+        for (var i=1; i<= atoms_dict[uuid]['select'].length; i++) {
+            $('#switch_marker_' + i + '_' + uuid).attr('whichChoice', -1);
+        }
+        atoms_dict[uuid]['select'] = [];
+        atoms_dict[uuid]['select'].push(id);
+        $('#switch_marker_' + 2 + '_' + uuid).attr('whichChoice', -1);
+}
+    var n = atoms_dict[uuid]['select'].length;
+    $('#switch_marker_' + n + '_' + uuid).attr('whichChoice', 0);
+    $('#marker_' + n + '_' + uuid).attr('translation', translation);
+    $('#marker_' + n + '_' + uuid).attr('scale', scale);
+    var atom_kind = '#lastonMouseoverObject_kind_'.concat(uuid);
+    var atom_index = '#lastonMouseoverObject_index_'.concat(uuid);
+    $(atom_kind).html(target.getAttribute("kind"));
+    $(atom_index).html(target.getAttribute("index"));
+    //
+    var coord = translation.split(" ")
+    var atom_position = '#position_'.concat(uuid);
+    var x = roundWithTwoDecimals(coord[0]);
+    var y = roundWithTwoDecimals(coord[1]);
+    var z = roundWithTwoDecimals(coord[2]);
+    var position = 'x = ' + x + ' y = ' + y + ' z = ' + z;
+    $(atom_position).html(position);
+
+    if (atoms_dict[uuid]['select'].length == 2){
+        calculate_distance(uuid);
+        draw_line(uuid);
+    }
+    else if (atoms_dict[uuid]['select'].length == 3){
+        calculate_angle(uuid);
+        draw_line(uuid);
+    }
+
+    console.log(event);
+}
+//Add a onMouseover callback to every shape
+$(document).ready(function(){
+    $("shape").each(function() {
+        // $(this).attr("onMouseover", "handleOnMouseover_shape(this)");
+        // $(this).attr("onclick", "handleClick_shape(this)");
+    });
+    //Add a onMouseover callback to every transform
+    $("transform").each(function() {
+        // $(this).attr("onMouseover", "handleOnMouseover_transform(this)");
+        // $(this).attr("onclick", "handleClick_transform(this)");
+    });
+});
+$(document).on("click", function(e) {
+    if (e.target === document || e.target.tagName === "BODY" || e.target.tagName === "HTML") {
+        $('#marker').attr('scale', "0.0001 0.0001 0.0001");
+    }
+});
+//Handle onMouseover on a shape
+function handleOnMouseover_shape(shape)
+{
+    var atom_kind = '#lastonMouseoverObject_kind_'.concat($(shape).attr("uuid"));
+    var atom_index = '#lastonMouseoverObject_index_'.concat($(shape).attr("uuid"));
+    $(atom_kind).html($(shape).attr("kind"));
+    $(atom_index).html($(shape).attr("index"));
+}
+//Handle onMouseover on a shape
+function handleClick_shape(shape)
+{
+    var atom_kind = '#lastonMouseoverObject_kind_'.concat($(shape).attr("uuid"));
+    var atom_index = '#lastonMouseoverObject_index_'.concat($(shape).attr("uuid"));
+    $(atom_kind).html($(shape).attr("kind"));
+    $(atom_index).html($(shape).attr("index"));
+}
+//Handle onMouseover on a transform
+function handleOnMouseover_transform(transform)
+{
+    var atom_position = '#position_'.concat($(transform).attr("uuid"));
+    var coord = $(transform).attr("translation").split(" "[0]);
+    var x = roundWithTwoDecimals(coord[0]);
+    var y = roundWithTwoDecimals(coord[1]);
+    var z = roundWithTwoDecimals(coord[2]);
+    var position = 'x = ' + x + ' y = ' + y + ' z = ' + z;
+    $(atom_position).html(position);
+}
+
+function calculate_distance(uuid)
+{
+    var measure = '#measure_'.concat(uuid);
+    var c1 = document.getElementById(atoms_dict[uuid]['select'][0]).getAttribute("translation").split(" ");
+    var c2 = document.getElementById(atoms_dict[uuid]['select'][1]).getAttribute("translation").split(" ");
+    r = (c1[0] - c2[0])*(c1[0] - c2[0]) + (c1[1] - c2[1])*(c1[1] - c2[1]) + (c1[2] - c2[2])*(c1[2] - c2[2]);
+    r = roundWithTwoDecimals(Math.sqrt(r));
+    var dist = 'Distance:  ' + r;
+    $(measure).html(dist);
+}
+function calculate_angle(uuid)
+{
+    var measure = '#measure_'.concat(uuid);
+    var c1 = document.getElementById(atoms_dict[uuid]['select'][0]).getAttribute("translation").split(" ");
+    var c2 = document.getElementById(atoms_dict[uuid]['select'][1]).getAttribute("translation").split(" ");
+    var c3 = document.getElementById(atoms_dict[uuid]['select'][2]).getAttribute("translation").split(" ");
+    var AB = Math.sqrt(Math.pow(c2[0]-c1[0],2)+ Math.pow(c2[1]-c1[1],2) + Math.pow(c2[2]-c1[2],2));    
+    var BC = Math.sqrt(Math.pow(c2[0]-c3[0],2)+ Math.pow(c2[1]-c3[1],2) + Math.pow(c2[2]-c3[2],2)); 
+    var AC = Math.sqrt(Math.pow(c3[0]-c1[0],2)+ Math.pow(c3[1]-c1[1],2)+ Math.pow(c3[2]-c1[2],2));
+    var angle = roundWithTwoDecimals(Math.acos((BC*BC+AB*AB-AC*AC)/(2*BC*AB))*180/3.1415926);
+    var angle = 'angle:  ' + angle;
+    $(measure).html(angle);
+}
+function draw_line(uuid)
+{
+    var n = atoms_dict[uuid]['select'].length;
+    var coordIndex = '';
+    var point = document.getElementById(atoms_dict[uuid]['select'][0]).getAttribute("translation");
+    for (var i = 1; i < n; i++) {
+        var c1 = document.getElementById(atoms_dict[uuid]['select'][i]).getAttribute("translation");
+        coordIndex = coordIndex + (i-1) + ' ' + i + ' -1 ';
+        point = point + ' ' + c1 + ' ';
+    }
+    $('#line_coor_' + 0 + '_' + uuid).attr('point', point);
+    $('#line_ind_' + 0 + '_' + uuid).attr('coordIndex', coordIndex);
+    $('#switch_line_' + 0 + '_' + uuid).attr('whichChoice', 0);
+}
+//Handle models
+function spacefilling(uuid)
+{
+    var objs = document.getElementsByName(''.concat('at_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("scale", "1.0, 1.0, 1.0");
+        }
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '-1');
+    document.getElementById('ps_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+function ballstick(uuid)
+{
+    if (atoms_dict[uuid]['bond']=='False'){ 
+        alert('Please set bond parameter in your code, e.g. bond=1.0!');
+        $('#error_'.concat(uuid)).html('(^_^) Please set bond parameter in your code, e.g. bond=1.0!');
+		return ;
+    }
+    var objs = document.getElementsByName(''.concat('at_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("scale", "0.6, 0.6, 0.6");
+        }
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '0');
+    document.getElementById('ps_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+function polyhedra(uuid)
+{
+    if (atoms_dict[uuid]['polyhedra'].length==0){ 
+        alert('Please set polyhedra parameter in your code, e.g. polyhedra={"Ti": ["O"]}!');
+        $('#error_'.concat(uuid)).html('(^_^) Please set polyhedra parameter in your code, e.g. polyhedra={"Ti": ["O"]}!');
+		return ;
+    }
+    var objs = document.getElementsByName(''.concat('at_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("scale", "0.6, 0.6, 0.6");
+        }
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '0');
+    document.getElementById('ps_'.concat(uuid)).setAttribute("whichChoice", '0');
+}
+function none(uuid)
+{
+    var objs = document.getElementsByName(''.concat('am_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("transparency", "0.0");
+        }
+    document.getElementById('ele_'.concat(uuid)).setAttribute("whichChoice", '-1');
+    document.getElementById('ind_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+        
+function element(uuid)
+{
+    if (atoms_dict[uuid]['label']=='False'){ 
+        alert('To show element, please set label=True in your code!');
+        $('#error_'.concat(uuid)).html('(^_^) To show element, please set label=True in your code!');
+		return ;
+	}
+    var objs = document.getElementsByName(''.concat('am_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("transparency", "0.4");
+        }
+    document.getElementById('ele_'.concat(uuid)).setAttribute("whichChoice", '0');
+    document.getElementById('ind_'.concat(uuid)).setAttribute("whichChoice", '-1');
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+function index(uuid)
+{
+    if (atoms_dict[uuid]['label']=='False'){ 
+        alert('To show index, please set label=True in your code!');
+        $('#error_'.concat(uuid)).html('(^_^) To show index, please set label=True in your code!');
+		return ;
+	}
+    var objs = document.getElementsByName(''.concat('am_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("transparency", "0.4");
+        }
+    document.getElementById('ind_'.concat(uuid)).setAttribute("whichChoice", '0');
+    document.getElementById('ele_'.concat(uuid)).setAttribute("whichChoice", '-1');
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+// } 
+</script> </body>
+</html>
