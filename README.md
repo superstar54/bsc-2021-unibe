@@ -2,12 +2,17 @@
 
 These exercises are part of the BSc project held at the University of Bern during the spring semester 2021.
 
-## Part 1 Bulk reaction and phase diagram
+The project including the following parts:
+* 1 Bulk reaction and phase diagram
+* 1 Surface structures
+* 3 Molecular adsorption
+* 4 Dissociative adsorption
+* 5 Decomposition pathways
 
-## Part 1 Surface structures
 
-## Part 3 Molecular adsorption
+## Set-up working environment
+* Connect to the HPC, Ubelix. If you are using a Windows system, please have a look at this introduction.
+https://github.com/superstar54/pc2-practical-cc/blob/main/Setup.docx
+* You can also use VScode for the conneciton
 
-## Part 4 Dissociative adsorption
 
-## Part 5 Decomposition pathways
