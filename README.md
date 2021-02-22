@@ -4,8 +4,10 @@ These exercises are part of the BSc project held at the University of Bern durin
 
 ## Part 1 Bulk reaction and phase diagram
 
-## Part 2 Molecular adsorption
+## Part 1 Surface structures
 
-## Part 3 Dissociative adsorption
+## Part 3 Molecular adsorption
 
-## Part 4 Transition state
+## Part 4 Dissociative adsorption
+
+## Part 5 Decomposition pathways

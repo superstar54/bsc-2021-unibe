@@ -1,0 +1,2659 @@
+<html>
+<head>
+<title>ASE atomic visualization</title>
+<link rel="stylesheet" type="text/css"
+ href="https://www.x3dom.org/x3dom/release/x3dom.css">
+</link>
+<script type="text/javascript"
+ src="https://www.x3dom.org/x3dom/release/x3dom.js">
+</script>
+<style>
+* {
+    box-sizing: border-box;
+  }
+ 
+/* Create two unequal columns that floats next to each other */
+.column {
+  float: left;
+  padding: 1px;
+}
+
+.left {
+  width: 20%;
+}
+
+.right {
+  width: 80%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+#x3dase{
+    top:0;
+    width: 80%;
+    height: 80%;
+    border:2px solid darkorange;        
+}
+
+#sidebar{
+    top:0;
+    border:2px solid darkorange;        
+}
+
+
+/* Sidebar component containers */
+.ui-widget-header
+{
+  background-color: lightblue;
+  font-size: 12px;
+
+}
+.sidebarComponent
+{
+    padding:2px 2px 2px 2px;
+    font-size: medium;
+}
+
+.button {
+  background-color: #4CAF50; /* Green */
+  border: 1px solid green;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
+  cursor: pointer;
+  /* float: left; */
+}
+
+</style></head>
+<body>
+<div class = "column left", id = "sidebar">
+
+    <div class="ui-widget-header">Model</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left;">
+            <button type="button" class = "button" onclick="spacefilling('74d181ce')">Ball</button>
+            <button type="button" class = "button" onclick="ballstick('74d181ce')">Ball-and-stick</button>
+            <button type="button" class = "button" onclick="polyhedra('74d181ce')">Polyhedra</button>
+        </form>
+    </div>
+    <div class="ui-widget-header">Label</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left;">
+            <button type="button" class = "button" onclick="none('74d181ce')">None</button>
+            <button type="button" class = "button" onclick="element('74d181ce')"> Element</button>
+            <button type="button" class = "button" onclick="index('74d181ce')">Index</button>
+        </form>
+    </div>
+
+    <div class="ui-widget-header">Camera</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left;">
+            <button type="button" class = "button" onclick="document.getElementById('camera_ortho_74d181ce').setAttribute('set_bind','true');">Orthographic</button>
+            <button type="button" class = "button" onclick="document.getElementById('camera_persp_74d181ce').setAttribute('set_bind','true');">Perspective</button>
+        </form>
+    </div>
+
+    <div class="ui-widget-header">View</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left;">
+            <button type="button" class = "button" onclick="set_viewpoint('74d181ce', 'top_pos', 'top_ori')">Top</button>
+            <button type="button" class = "button" onclick="set_viewpoint('74d181ce', 'front_pos', 'front_ori')">Front</button>
+            <button type="button" class = "button" onclick="set_viewpoint('74d181ce', 'right_pos', 'right_ori')">Right</button>
+        </form>
+    </div>
+
+    <div class="ui-widget-header">Measurement</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left; font-size: 12px;">
+            <table style="font-size:1.0em;">
+                <td id="lastonMouseoverObject_kind_74d181ce">-</td> <td id="lastonMouseoverObject_index_74d181ce">-</td> 
+                <td id="position_74d181ce">-</td></tr>
+            </table>
+            <p id="measure_74d181ce"></p>
+            <p id="error_74d181ce"></p>
+        </form>
+    </div>
+
+</div>
+
+<script>
+    document.onkeyup = function(e) {
+      var x = event.which || event.keyCode;
+      var label = 0;
+        if (x == 49) {
+            set_viewpoint('74d181ce', 'top_pos', 'top_ori');
+        } else if (x == 50) {
+            set_viewpoint('74d181ce', 'front_pos', 'front_ori');
+        } else if (x == 51) {
+            set_viewpoint('74d181ce', 'right_pos', 'right_ori');
+        } else if (x == 83) {
+          spacefilling('74d181ce');
+        } else if (x == 66) {
+          ballstick('74d181ce');
+        } else if (x == 80) {
+          polyhedra('74d181ce');
+        } else if (x == 52) {
+            element('74d181ce');
+        } else if (x == 53) {
+            index('74d181ce');
+        } else if (x == 54) {
+            none('74d181ce');
+        }
+      };
+    </script>
+ <div class = "column right" > 
+   <X3D id = "x3dase" PrimitiveQuality = "high" > 
+     <Scene > 
+       <Transform id = "t_camera_persp_74d181ce" rotation = "0 0 0 0" > 
+         <Viewpoint id = "camera_persp_74d181ce" position = "1.906716567062799 1.7992455110729375 12.646167530225375" centerOfRotation = "1.906716567062799 1.7992455110729375 1.1592178698499096" orientation = "0 0 0 0" description = "camera" > 
+         </Viewpoint> 
+       </Transform> 
+       <Transform id = "t_camera_ortho_74d181ce" rotation = "0 0 0 0" > 
+         <OrthoViewpoint id = "camera_ortho_74d181ce" position = "1.906716567062799 1.7992455110729375 12.646167530225375" centerOfRotation = "1.906716567062799 1.7992455110729375 1.1592178698499096" orientation = "0 0 0 0" fieldOfView = "-3.828983220125155 -3.828983220125155 3.828983220125155 3.828983220125155" description = "camera" > 
+         </OrthoViewpoint> 
+       </Transform> 
+       <Group onclick = "handleGroupClick(event, '74d181ce')" > 
+         <Switch whichChoice = "-1" > 
+           <Shape DEF = "as_Cu" id = "as_Cu_74d181ce" > 
+             <Appearance DEF = "app_Cu" > 
+               <Material name = "am_74d181ce" diffuseColor = "0.784 0.502 0.2" transparency = "0.01" > 
+               </Material> 
+             </Appearance> 
+             <Sphere DEF = "asp_Cu" radius = "1.32" > 
+             </Sphere> 
+           </Shape> 
+         </Switch> 
+         <Transform DEF = "at_0_74d181ce" uuid = "74d181ce" id = "at_0_74d181ce" radius = "1.32" name = "at_74d181ce" translation = "-0.0 1.47 0.0" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "0" uuid = "74d181ce" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_1_74d181ce" uuid = "74d181ce" id = "at_1_74d181ce" radius = "1.32" name = "at_74d181ce" translation = "2.55 1.47 0.0" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "1" uuid = "74d181ce" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_2_74d181ce" uuid = "74d181ce" id = "at_2_74d181ce" radius = "1.32" name = "at_74d181ce" translation = "1.28 3.68 0.0" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "2" uuid = "74d181ce" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_3_74d181ce" uuid = "74d181ce" id = "at_3_74d181ce" radius = "1.32" name = "at_74d181ce" translation = "3.83 3.68 0.0" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "3" uuid = "74d181ce" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_4_74d181ce" uuid = "74d181ce" id = "at_4_74d181ce" radius = "1.32" name = "at_74d181ce" translation = "0.0 0.0 2.08" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "4" uuid = "74d181ce" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_5_74d181ce" uuid = "74d181ce" id = "at_5_74d181ce" radius = "1.32" name = "at_74d181ce" translation = "2.55 0.0 2.08" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "5" uuid = "74d181ce" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_6_74d181ce" uuid = "74d181ce" id = "at_6_74d181ce" radius = "1.32" name = "at_74d181ce" translation = "1.28 2.21 2.08" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "6" uuid = "74d181ce" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_7_74d181ce" uuid = "74d181ce" id = "at_7_74d181ce" radius = "1.32" name = "at_74d181ce" translation = "3.83 2.21 2.08" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "7" uuid = "74d181ce" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Switch whichChoice = "-1" > 
+           <Shape DEF = "as_N" id = "as_N_74d181ce" > 
+             <Appearance DEF = "app_N" > 
+               <Material name = "am_74d181ce" diffuseColor = "0.188 0.314 0.973" transparency = "0.01" > 
+               </Material> 
+             </Appearance> 
+             <Sphere DEF = "asp_N" radius = "0.71" > 
+             </Sphere> 
+           </Shape> 
+         </Switch> 
+         <Transform DEF = "at_8_74d181ce" uuid = "74d181ce" id = "at_8_74d181ce" radius = "0.71" name = "at_74d181ce" translation = "1.28 0.74 3.28" scale = "1 1 1" > 
+           <Shape kind = "N" index = "8" uuid = "74d181ce" > 
+             <Appearance USE = "app_N" > 
+             </Appearance> 
+             <Sphere USE = "asp_N" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_9_74d181ce" uuid = "74d181ce" id = "at_9_74d181ce" radius = "0.71" name = "at_74d181ce" translation = "2.25 1.3 3.28" scale = "1 1 1" > 
+           <Shape kind = "N" index = "9" uuid = "74d181ce" > 
+             <Appearance USE = "app_N" > 
+             </Appearance> 
+             <Sphere USE = "asp_N" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Group> 
+       <Shape > 
+         <IndexedLineSet coordIndex = "0 1 -1 0 2 -1 0 4 -1 1 3 -1 1 5 -1 2 3 -1 2 6 -1 3 7 -1 4 5 -1 4 6 -1 5 7 -1 6 7 -1" > 
+           <Coordinate point = "[[0.         0.         0.         0.         0.         0.
+  2.55265548 4.42132899 0.         2.55265548 4.42132899 0.
+  5.10531096 0.         0.         5.10531096 0.         0.
+  7.65796644 4.42132899 0.         7.65796644 4.42132899 0.        ]]" > 
+           </Coordinate> 
+         </IndexedLineSet> 
+         <Appearance > 
+           <Material diffuseColor = "0 0 0" emissiveColor = "0 0.5 1" > 
+           </Material> 
+         </Appearance> 
+       </Shape> 
+       <Switch whichChoice = "-1" > 
+         <Shape DEF = "Cu" > 
+           <Appearance > 
+             <Material diffuseColor = "0.784 0.502 0.2" transparency = "0.01" > 
+             </Material> 
+           </Appearance> 
+           <Cylinder height = "1.0" radius = "0.1" subdivision = "8" > 
+           </Cylinder> 
+         </Shape> 
+       </Switch> 
+       <Switch whichChoice = "-1" > 
+         <Shape DEF = "N" > 
+           <Appearance > 
+             <Material diffuseColor = "0.188 0.314 0.973" transparency = "0.01" > 
+             </Material> 
+           </Appearance> 
+           <Cylinder height = "1.0" radius = "0.1" subdivision = "8" > 
+           </Cylinder> 
+         </Shape> 
+       </Switch> 
+       <Switch id = "bs_74d181ce" whichChoice = "-1" > 
+         <Group > 
+           <Transform translation = "-0.0 1.11 0.52" scale = "1 1.28 1" rotation = "-1.0 0.0 0.0 0.9553" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 1.66 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.0 1.47 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.32 1.66 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 -0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.0 1.47 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.0 1.47 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 1.47 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.0 2.21 0.52" scale = "1 1.8 1" rotation = "-1.0 0.0 -0.0 2.5261" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.32 1.66 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 -0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.0 1.11 0.52" scale = "1 1.28 1" rotation = "-1.0 0.0 0.0 0.9553" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 1.11 0.52" scale = "1 1.81 1" rotation = "-0.6325 -0.0 0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.56 1.43 0.82" scale = "1 1.99 1" rotation = "-0.8244 0.0 0.566 1.5277" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 1.29 0.82" scale = "1 1.8 1" rotation = "-0.9321 0.0 0.3622 1.3646" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 1.66 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.64 1.11 0.52" scale = "1 1.81 1" rotation = "-0.6325 0.0 -0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.32 2.03 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 2.03 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.32 0.92 0.0" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.64 1.47 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.0 1.47 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 0.92 0.0" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.32 0.92 0.0" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.32 1.66 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 -0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 1.47 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.0 1.11 0.52" scale = "1 1.28 1" rotation = "-1.0 0.0 0.0 0.9553" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 1.11 0.52" scale = "1 1.81 1" rotation = "-0.6325 -0.0 0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 1.66 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 1.29 0.82" scale = "1 1.8 1" rotation = "-0.9321 0.0 0.3622 1.3646" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.56 1.43 0.82" scale = "1 1.99 1" rotation = "-0.8244 0.0 0.566 1.5277" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.64 1.11 0.52" scale = "1 1.81 1" rotation = "-0.6325 0.0 -0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.64 1.47 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 2.03 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.32 2.03 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.0 2.21 0.52" scale = "1 1.8 1" rotation = "-1.0 0.0 -0.0 2.5261" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.0 2.21 0.52" scale = "1 1.8 1" rotation = "-1.0 0.0 -0.0 2.5261" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.32 1.66 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 -0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.0 1.47 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 1.29 0.82" scale = "1 1.8 1" rotation = "-0.9321 0.0 0.3622 1.3646" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 1.66 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.0 1.11 0.52" scale = "1 1.28 1" rotation = "-1.0 0.0 0.0 0.9553" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.32 0.92 0.0" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 0.92 0.0" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 0.92 0.0" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 1.47 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.0 1.11 0.52" scale = "1 1.28 1" rotation = "-1.0 0.0 0.0 0.9553" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 1.11 0.52" scale = "1 1.81 1" rotation = "-0.6325 -0.0 0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 1.66 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 1.29 0.82" scale = "1 1.8 1" rotation = "-0.9321 0.0 0.3622 1.3646" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.56 1.43 0.82" scale = "1 1.99 1" rotation = "-0.8244 0.0 0.566 1.5277" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.0 1.47 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.64 1.47 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 2.03 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.32 2.03 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.64 1.11 0.52" scale = "1 1.81 1" rotation = "-0.6325 0.0 -0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.32 1.66 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 -0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 1.47 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 1.47 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.87 2.03 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.48 1.43 0.82" scale = "1 1.65 1" rotation = "-0.9959 0.0 -0.0903 1.5187" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 1.29 0.82" scale = "1 1.8 1" rotation = "-0.9321 0.0 -0.3622 1.3646" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.87 1.66 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 1.66 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 -0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 1.11 0.52" scale = "1 1.28 1" rotation = "-1.0 0.0 0.0 0.9553" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 1.11 0.52" scale = "1 1.81 1" rotation = "-0.6325 0.0 -0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.87 1.66 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 1.66 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 -0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 1.11 0.52" scale = "1 1.28 1" rotation = "-1.0 0.0 0.0 0.9553" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 1.47 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.48 1.43 0.82" scale = "1 1.65 1" rotation = "-0.9959 0.0 -0.0903 1.5187" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 2.21 0.52" scale = "1 1.8 1" rotation = "-1.0 0.0 -0.0 2.5261" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 1.11 0.52" scale = "1 1.81 1" rotation = "-0.6325 -0.0 0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 0.92 0.0" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.87 0.92 0.0" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 2.21 0.52" scale = "1 1.8 1" rotation = "-1.0 0.0 -0.0 2.5261" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.48 1.43 0.82" scale = "1 1.65 1" rotation = "-0.9959 0.0 -0.0903 1.5187" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 1.29 0.82" scale = "1 1.8 1" rotation = "-0.9321 0.0 -0.3622 1.3646" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.87 1.66 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 1.47 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 1.47 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.87 2.03 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 1.11 0.52" scale = "1 1.81 1" rotation = "-0.6325 0.0 -0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 1.11 0.52" scale = "1 1.28 1" rotation = "-1.0 0.0 0.0 0.9553" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 1.66 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 -0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 2.03 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 1.47 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 1.11 0.52" scale = "1 1.81 1" rotation = "-0.6325 -0.0 0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 1.47 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 2.03 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 0.92 0.0" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.87 0.92 0.0" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.48 1.43 0.82" scale = "1 1.65 1" rotation = "-0.9959 0.0 -0.0903 1.5187" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 1.29 0.82" scale = "1 1.8 1" rotation = "-0.9321 0.0 -0.3622 1.3646" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.87 1.66 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 1.66 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 -0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 1.11 0.52" scale = "1 1.28 1" rotation = "-1.0 0.0 0.0 0.9553" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 1.47 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 1.47 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 2.03 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 1.47 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 2.21 0.52" scale = "1 1.8 1" rotation = "-1.0 0.0 -0.0 2.5261" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.87 2.03 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 1.11 0.52" scale = "1 1.81 1" rotation = "-0.6325 0.0 -0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 1.47 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.87 0.92 0.0" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 0.92 0.0" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 1.47 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.48 1.43 0.82" scale = "1 1.65 1" rotation = "-0.9959 0.0 -0.0903 1.5187" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 1.29 0.82" scale = "1 1.8 1" rotation = "-0.9321 0.0 -0.3622 1.3646" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.87 1.66 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 1.66 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 -0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 1.11 0.52" scale = "1 1.28 1" rotation = "-1.0 0.0 0.0 0.9553" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 1.11 0.52" scale = "1 1.81 1" rotation = "-0.6325 -0.0 0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 3.32 0.52" scale = "1 1.28 1" rotation = "-1.0 0.0 0.0 0.9553" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 3.87 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 3.32 0.52" scale = "1 1.8 1" rotation = "-0.6325 -0.0 0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 3.32 0.52" scale = "1 1.28 1" rotation = "-1.0 0.0 0.0 0.9553" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 3.68 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 3.13 0.0" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 3.68 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.52 3.09 0.82" scale = "1 2.09 1" rotation = "-0.9584 0.0 0.2856 0.9633" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 3.32 0.52" scale = "1 1.8 1" rotation = "-0.6325 -0.0 0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 3.32 0.52" scale = "1 1.28 1" rotation = "-1.0 0.0 0.0 0.9553" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 3.68 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 3.13 0.0" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 3.32 0.52" scale = "1 1.8 1" rotation = "-0.6325 0.0 -0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 3.68 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 3.13 0.0" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 3.68 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 3.87 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 4.42 0.52" scale = "1 1.8 1" rotation = "-1.0 0.0 -0.0 2.5261" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 3.87 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 -0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 4.24 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 4.24 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 3.68 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 3.87 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 -0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 3.32 0.52" scale = "1 1.28 1" rotation = "-1.0 0.0 0.0 0.9553" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 3.13 0.0" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 3.68 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 3.32 0.52" scale = "1 1.8 1" rotation = "-0.6325 0.0 -0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 3.68 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 3.87 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 3.32 0.52" scale = "1 1.8 1" rotation = "-0.6325 -0.0 0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 3.32 0.52" scale = "1 1.28 1" rotation = "-1.0 0.0 0.0 0.9553" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 3.68 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 3.13 0.0" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 3.87 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 3.87 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 -0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 4.24 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 4.24 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 3.87 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 -0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 4.42 0.52" scale = "1 1.8 1" rotation = "-1.0 0.0 -0.0 2.5261" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.88 4.19 0.82" scale = "1 2.09 1" rotation = "-0.9018 0.0 -0.4322 2.0811" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 3.68 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 4.24 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 4.24 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 3.87 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 -0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 4.42 0.52" scale = "1 1.8 1" rotation = "-1.0 0.0 -0.0 2.5261" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 3.13 0.0" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 3.68 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 3.32 0.52" scale = "1 1.8 1" rotation = "-0.6325 0.0 -0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 3.87 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 3.68 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 3.32 0.52" scale = "1 1.8 1" rotation = "-0.6325 0.0 -0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.51 4.24 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.47 3.32 0.52" scale = "1 1.81 1" rotation = "-0.6325 -0.0 0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 3.68 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.51 4.24 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.47 3.32 0.52" scale = "1 1.81 1" rotation = "-0.6325 -0.0 0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.47 3.68 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.15 3.13 0.0" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 3.68 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.47 3.68 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.51 3.13 0.0" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.15 3.13 0.0" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 3.68 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 3.68 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 3.32 0.52" scale = "1 1.28 1" rotation = "-1.0 0.0 0.0 0.9553" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.15 4.24 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.15 3.87 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.15 3.87 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 4.42 0.52" scale = "1 1.8 1" rotation = "-1.0 0.0 -0.0 2.5261" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.51 3.87 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 -0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.51 3.87 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 -0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.15 4.24 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.51 3.13 0.0" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 3.32 0.52" scale = "1 1.28 1" rotation = "-1.0 0.0 0.0 0.9553" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 3.32 0.52" scale = "1 1.8 1" rotation = "-0.6325 0.0 -0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 4.05 0.82" scale = "1 1.8 1" rotation = "-1.0 0.0 -0.0 1.9926" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.07 4.19 0.82" scale = "1 1.99 1" rotation = "-0.9584 0.0 0.2856 2.1075" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.07 4.19 0.82" scale = "1 1.99 1" rotation = "-0.9584 0.0 0.2856 2.1075" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 4.05 0.82" scale = "1 1.8 1" rotation = "-1.0 0.0 -0.0 1.9926" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 4.42 0.52" scale = "1 1.8 1" rotation = "-1.0 0.0 -0.0 2.5261" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 3.68 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 3.32 0.52" scale = "1 1.28 1" rotation = "-1.0 0.0 0.0 0.9553" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 3.68 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.51 3.87 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 -0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.15 3.87 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 3.68 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.51 4.24 0.0" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.15 3.87 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.47 3.32 0.52" scale = "1 1.81 1" rotation = "-0.6325 -0.0 0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 4.05 0.82" scale = "1 1.8 1" rotation = "-1.0 0.0 -0.0 1.9926" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.15 3.13 0.0" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.51 3.13 0.0" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.47 3.68 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 3.68 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 3.32 0.52" scale = "1 1.8 1" rotation = "-0.6325 0.0 -0.7746 1.1503" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 3.32 0.52" scale = "1 1.28 1" rotation = "-1.0 0.0 0.0 0.9553" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.15 4.24 0.0" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.51 3.87 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 -0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.15 3.87 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 4.42 0.52" scale = "1 1.8 1" rotation = "-1.0 0.0 -0.0 2.5261" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 4.05 0.82" scale = "1 1.8 1" rotation = "-1.0 0.0 -0.0 1.9926" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.51 3.87 0.52" scale = "1 1.28 1" rotation = "-0.8528 0.0 -0.5222 1.8636" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 3.32 0.52" scale = "1 1.28 1" rotation = "-1.0 0.0 0.0 0.9553" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 3.68 0.0" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.07 4.19 0.82" scale = "1 1.99 1" rotation = "-0.9584 0.0 0.2856 2.1075" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.0 0.37 1.56" scale = "1 1.28 1" rotation = "1.0 -0.0 -0.0 2.1863" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.64 0.37 1.56" scale = "1 1.81 1" rotation = "0.6325 0.0 -0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.64 0.0 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.32 0.55 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.0 0.0 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 0.37 1.56" scale = "1 1.81 1" rotation = "0.6325 -0.0 0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.0 0.0 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 0.0 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 0.55 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 0.18 2.38" scale = "1 0.95 1" rotation = "-0.685 -0.0 0.7286 1.969" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.0 -0.74 1.56" scale = "1 1.8 1" rotation = "1.0 -0.0 0.0 0.6155" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 -0.18 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.32 -0.55 2.08" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 -0.55 2.08" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.0 0.37 1.56" scale = "1 1.28 1" rotation = "1.0 -0.0 -0.0 2.1863" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.64 0.37 1.56" scale = "1 1.81 1" rotation = "0.6325 0.0 -0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.64 0.0 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.32 0.55 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 -0.18 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.32 -0.18 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 -0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.0 0.37 1.56" scale = "1 1.28 1" rotation = "1.0 -0.0 -0.0 2.1863" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.0 0.0 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 0.37 1.56" scale = "1 1.81 1" rotation = "0.6325 -0.0 0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 0.0 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 0.55 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 0.18 2.38" scale = "1 0.95 1" rotation = "-0.685 -0.0 0.7286 1.969" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 -0.18 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.0 -0.74 1.56" scale = "1 1.8 1" rotation = "1.0 -0.0 0.0 0.6155" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.32 -0.55 2.08" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 -0.55 2.08" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.32 -0.18 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 -0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.56 0.33 2.38" scale = "1 1.43 1" rotation = "-0.4698 -0.0 0.8828 2.0422" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 0.37 1.56" scale = "1 1.81 1" rotation = "0.6325 -0.0 0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.0 0.0 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 0.18 2.38" scale = "1 0.95 1" rotation = "-0.685 -0.0 0.7286 1.969" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 0.55 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 0.0 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.32 -0.18 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 -0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.0 0.0 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.32 -0.18 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 -0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 -0.18 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.64 0.0 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.32 0.55 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.64 0.37 1.56" scale = "1 1.81 1" rotation = "0.6325 0.0 -0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.0 0.37 1.56" scale = "1 1.28 1" rotation = "1.0 -0.0 -0.0 2.1863" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.32 -0.18 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 -0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.0 0.37 1.56" scale = "1 1.28 1" rotation = "1.0 -0.0 -0.0 2.1863" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.0 -0.74 1.56" scale = "1 1.8 1" rotation = "1.0 -0.0 0.0 0.6155" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 -0.18 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "-0.32 -0.55 2.08" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 -0.55 2.08" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.32 0.18 2.38" scale = "1 0.95 1" rotation = "-0.685 -0.0 0.7286 1.969" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.0 0.0 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 0.37 1.56" scale = "1 1.81 1" rotation = "0.6325 -0.0 0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 0.37 1.56" scale = "1 1.28 1" rotation = "1.0 -0.0 -0.0 2.1863" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 0.0 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.87 -0.55 2.08" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 0.37 1.56" scale = "1 1.28 1" rotation = "1.0 -0.0 -0.0 2.1863" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 0.0 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 -0.55 2.08" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.87 -0.55 2.08" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 0.0 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 -0.74 1.56" scale = "1 1.8 1" rotation = "1.0 -0.0 0.0 0.6155" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.87 -0.18 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 -0.18 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 -0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 -0.55 2.08" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 0.37 1.56" scale = "1 1.81 1" rotation = "0.6325 0.0 -0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 -0.18 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 -0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.87 -0.18 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 -0.74 1.56" scale = "1 1.8 1" rotation = "1.0 -0.0 0.0 0.6155" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.48 0.33 2.38" scale = "1 0.9 1" rotation = "-0.9706 0.0 -0.2408 2.382" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 0.55 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 -0.18 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 -0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.87 -0.18 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 0.37 1.56" scale = "1 1.28 1" rotation = "1.0 -0.0 -0.0 2.1863" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 0.0 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 0.18 2.38" scale = "1 0.95 1" rotation = "-0.685 0.0 -0.7286 1.969" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.48 0.33 2.38" scale = "1 0.9 1" rotation = "-0.9706 0.0 -0.2408 2.382" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.87 -0.18 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 -0.18 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 -0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 0.0 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 0.0 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.48 0.33 2.38" scale = "1 0.9 1" rotation = "-0.9706 0.0 -0.2408 2.382" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 0.18 2.38" scale = "1 0.95 1" rotation = "-0.685 0.0 -0.7286 1.969" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.87 0.55 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 0.0 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 0.0 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.48 0.33 2.38" scale = "1 0.9 1" rotation = "-0.9706 0.0 -0.2408 2.382" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 0.18 2.38" scale = "1 0.95 1" rotation = "-0.685 0.0 -0.7286 1.969" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.87 0.55 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 0.55 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 0.0 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 0.37 1.56" scale = "1 1.28 1" rotation = "1.0 -0.0 -0.0 2.1863" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 0.37 1.56" scale = "1 1.81 1" rotation = "0.6325 -0.0 0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 0.0 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 0.37 1.56" scale = "1 1.81 1" rotation = "0.6325 0.0 -0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 0.0 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.87 -0.55 2.08" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 0.0 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 0.55 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 0.18 2.38" scale = "1 0.95 1" rotation = "-0.685 0.0 -0.7286 1.969" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.48 0.33 2.38" scale = "1 0.9 1" rotation = "-0.9706 0.0 -0.2408 2.382" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.87 0.55 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 0.37 1.56" scale = "1 1.81 1" rotation = "0.6325 0.0 -0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 0.37 1.56" scale = "1 1.28 1" rotation = "1.0 -0.0 -0.0 2.1863" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 0.37 1.56" scale = "1 1.81 1" rotation = "0.6325 -0.0 0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.55 -0.74 1.56" scale = "1 1.8 1" rotation = "1.0 -0.0 0.0 0.6155" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 -0.18 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 -0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.87 -0.18 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.23 -0.55 2.08" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 2.03 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 -0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 2.58 1.56" scale = "1 1.8 1" rotation = "0.6325 0.0 -0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 2.58 1.56" scale = "1 1.28 1" rotation = "1.0 -0.0 -0.0 2.1863" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 2.21 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 2.76 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 2.21 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 2.03 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 -0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 2.76 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 2.58 1.56" scale = "1 1.28 1" rotation = "1.0 -0.0 -0.0 2.1863" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 1.47 1.56" scale = "1 1.81 1" rotation = "1.0 -0.0 0.0 0.6155" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.52 1.98 2.38" scale = "1 0.9 1" rotation = "-0.775 -0.0 0.632 1.0401" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 1.84 2.38" scale = "1 0.95 1" rotation = "-1.0 0.0 0.0 0.6834" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 2.21 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 2.03 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 2.58 1.56" scale = "1 1.28 1" rotation = "1.0 -0.0 -0.0 2.1863" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 2.03 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 -0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 2.21 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 2.21 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 2.03 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 2.58 1.56" scale = "1 1.8 1" rotation = "0.6325 -0.0 0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 1.66 2.08" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 1.66 2.08" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 2.21 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 2.21 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 1.84 2.38" scale = "1 0.95 1" rotation = "-1.0 0.0 0.0 0.6834" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.52 1.98 2.38" scale = "1 0.9 1" rotation = "-0.775 -0.0 0.632 1.0401" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 2.76 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 2.03 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 -0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.52 1.98 2.38" scale = "1 0.9 1" rotation = "-0.775 -0.0 0.632 1.0401" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 2.03 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 2.21 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 2.03 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 -0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 1.47 1.56" scale = "1 1.81 1" rotation = "1.0 -0.0 0.0 0.6155" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 2.58 1.56" scale = "1 1.28 1" rotation = "1.0 -0.0 -0.0 2.1863" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 2.58 1.56" scale = "1 1.8 1" rotation = "0.6325 0.0 -0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 1.47 1.56" scale = "1 1.81 1" rotation = "1.0 -0.0 0.0 0.6155" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 2.58 1.56" scale = "1 1.8 1" rotation = "0.6325 0.0 -0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 2.58 1.56" scale = "1 1.28 1" rotation = "1.0 -0.0 -0.0 2.1863" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 2.03 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 2.76 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 2.76 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.52 1.98 2.38" scale = "1 0.9 1" rotation = "-0.775 -0.0 0.632 1.0401" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 1.84 2.38" scale = "1 0.95 1" rotation = "-1.0 0.0 0.0 0.6834" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 2.21 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 1.66 2.08" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 1.66 2.08" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 2.58 1.56" scale = "1 1.8 1" rotation = "0.6325 -0.0 0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 2.76 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.64 2.21 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 2.03 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 2.58 1.56" scale = "1 1.8 1" rotation = "0.6325 -0.0 0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 1.66 2.08" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 1.66 2.08" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 2.21 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.91 2.21 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.52 1.98 2.38" scale = "1 0.9 1" rotation = "-0.775 -0.0 0.632 1.0401" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 1.84 2.38" scale = "1 0.95 1" rotation = "-1.0 0.0 0.0 0.6834" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 2.21 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 2.21 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 1.47 1.56" scale = "1 1.81 1" rotation = "1.0 -0.0 0.0 0.6155" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.47 2.21 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 2.58 1.56" scale = "1 1.28 1" rotation = "1.0 -0.0 -0.0 2.1863" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.51 2.03 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 -0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.15 2.03 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.15 1.66 2.08" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.47 2.21 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.15 1.66 2.08" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.44 1.98 2.38" scale = "1 1.09 1" rotation = "-0.6063 0.0 -0.7953 1.1404" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 2.21 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.15 2.03 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.51 2.03 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 -0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.47 2.58 1.56" scale = "1 1.8 1" rotation = "0.6325 -0.0 0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 2.58 1.56" scale = "1 1.8 1" rotation = "0.6325 0.0 -0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.44 1.98 2.38" scale = "1 1.09 1" rotation = "-0.6063 0.0 -0.7953 1.1404" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 2.21 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.51 1.66 2.08" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 2.58 1.56" scale = "1 1.28 1" rotation = "1.0 -0.0 -0.0 2.1863" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.15 2.03 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.51 2.03 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 -0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.47 2.58 1.56" scale = "1 1.8 1" rotation = "0.6325 -0.0 0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 2.58 1.56" scale = "1 1.28 1" rotation = "1.0 -0.0 -0.0 2.1863" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.51 1.66 2.08" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 2.21 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 2.21 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.47 2.21 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.15 1.66 2.08" scale = "1 1.28 1" rotation = "-0.0 -0.0 1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.15 2.76 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.51 2.76 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.44 1.98 2.38" scale = "1 1.09 1" rotation = "-0.6063 0.0 -0.7953 1.1404" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.44 1.98 2.38" scale = "1 1.09 1" rotation = "-0.6063 0.0 -0.7953 1.1404" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 2.21 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 2.21 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 1.5708" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.51 1.66 2.08" scale = "1 1.28 1" rotation = "-0.0 0.0 -1.0 0.5236" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 2.58 1.56" scale = "1 1.28 1" rotation = "1.0 -0.0 -0.0 2.1863" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.47 2.58 1.56" scale = "1 1.8 1" rotation = "0.6325 -0.0 0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.51 2.03 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 -0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.15 2.03 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 2.58 1.56" scale = "1 1.8 1" rotation = "0.6325 0.0 -0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.15 2.76 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.51 2.76 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 1.47 1.56" scale = "1 1.81 1" rotation = "1.0 -0.0 0.0 0.6155" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.15 2.03 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 1.47 1.56" scale = "1 1.81 1" rotation = "1.0 -0.0 0.0 0.6155" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 2.58 1.56" scale = "1 1.28 1" rotation = "1.0 -0.0 -0.0 2.1863" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.51 2.03 1.56" scale = "1 1.28 1" rotation = "0.8528 -0.0 -0.5222 1.278" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.83 2.21 2.08" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.51 2.76 2.08" scale = "1 1.28 1" rotation = "0.0 0.0 -1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "4.15 2.76 2.08" scale = "1 1.28 1" rotation = "0.0 -0.0 1.0 2.618" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "3.19 2.58 1.56" scale = "1 1.8 1" rotation = "0.6325 0.0 -0.7746 1.9913" > 
+             <Shape USE = "Cu" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 0.37 2.46" scale = "1 1.8 1" rotation = "1.0 -0.0 0.0 1.149" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 0.92 2.46" scale = "1 1.8 1" rotation = "0.9321 -0.0 -0.3622 1.777" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 0.92 2.46" scale = "1 1.8 1" rotation = "0.9321 -0.0 -0.3622 1.777" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 0.37 2.46" scale = "1 1.8 1" rotation = "1.0 -0.0 0.0 1.149" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 0.92 2.46" scale = "1 1.8 1" rotation = "0.9321 -0.0 0.3622 1.777" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 0.55 2.98" scale = "1 0.95 1" rotation = "0.685 0.0 -0.7286 1.1726" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 0.55 2.98" scale = "1 0.95 1" rotation = "0.685 -0.0 0.7286 1.1726" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 1.11 2.98" scale = "1 0.95 1" rotation = "1.0 -0.0 -0.0 2.4582" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 0.92 2.46" scale = "1 1.8 1" rotation = "0.9321 -0.0 0.3622 1.777" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.52 0.88 3.28" scale = "1 0.56 1" rotation = "0.0 -0.0 1.0 2.0944" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 1.11 2.98" scale = "1 0.95 1" rotation = "1.0 -0.0 -0.0 2.4582" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 0.55 2.98" scale = "1 0.95 1" rotation = "0.685 -0.0 0.7286 1.1726" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 0.55 2.98" scale = "1 0.95 1" rotation = "0.685 0.0 -0.7286 1.1726" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 0.74 3.28" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.52 0.88 3.28" scale = "1 0.56 1" rotation = "0.0 -0.0 1.0 2.0944" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 0.37 2.46" scale = "1 1.8 1" rotation = "1.0 -0.0 0.0 1.149" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 0.74 3.28" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 0.74 3.28" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 1.11 2.98" scale = "1 0.95 1" rotation = "1.0 -0.0 -0.0 2.4582" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 0.55 2.98" scale = "1 0.95 1" rotation = "0.685 -0.0 0.7286 1.1726" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 0.55 2.98" scale = "1 0.95 1" rotation = "0.685 0.0 -0.7286 1.1726" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 0.92 2.46" scale = "1 1.8 1" rotation = "0.9321 -0.0 0.3622 1.777" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 0.92 2.46" scale = "1 1.8 1" rotation = "0.9321 -0.0 -0.3622 1.777" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 0.92 2.46" scale = "1 1.8 1" rotation = "0.9321 -0.0 -0.3622 1.777" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 0.92 2.46" scale = "1 1.8 1" rotation = "0.9321 -0.0 0.3622 1.777" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.52 0.88 3.28" scale = "1 0.56 1" rotation = "0.0 -0.0 1.0 2.0944" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 0.74 3.28" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 1.11 2.98" scale = "1 0.95 1" rotation = "1.0 -0.0 -0.0 2.4582" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.6 0.55 2.98" scale = "1 0.95 1" rotation = "0.685 -0.0 0.7286 1.1726" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.28 0.37 2.46" scale = "1 1.8 1" rotation = "1.0 -0.0 0.0 1.149" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "0.96 0.55 2.98" scale = "1 0.95 1" rotation = "0.685 0.0 -0.7286 1.1726" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.69 1.34 2.46" scale = "1 1.99 1" rotation = "0.8244 -0.0 -0.566 1.6139" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.25 1.3 3.28" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.01 1.16 3.28" scale = "1 0.56 1" rotation = "-0.0 0.0 -1.0 1.0472" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.65 1.53 2.98" scale = "1 1.09 1" rotation = "0.6063 -0.0 0.7953 2.0012" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.01 1.53 2.98" scale = "1 0.9 1" rotation = "0.775 0.0 -0.632 2.1015" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.33 1.34 2.46" scale = "1 1.65 1" rotation = "0.9959 -0.0 0.0903 1.6229" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.33 0.98 2.98" scale = "1 0.9 1" rotation = "0.9706 -0.0 0.2408 0.7596" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.01 0.79 2.46" scale = "1 1.99 1" rotation = "0.9584 -0.0 -0.2856 1.0341" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.01 0.79 2.46" scale = "1 1.99 1" rotation = "0.9584 -0.0 -0.2856 1.0341" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.33 1.34 2.46" scale = "1 1.65 1" rotation = "0.9959 -0.0 0.0903 1.6229" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.33 0.98 2.98" scale = "1 0.9 1" rotation = "0.9706 -0.0 0.2408 0.7596" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.01 1.53 2.98" scale = "1 0.9 1" rotation = "0.775 0.0 -0.632 2.1015" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.25 1.3 3.28" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.01 1.9 2.46" scale = "1 2.09 1" rotation = "0.9584 -0.0 -0.2856 2.1783" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.69 1.34 2.46" scale = "1 1.99 1" rotation = "0.8244 -0.0 -0.566 1.6139" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.01 1.16 3.28" scale = "1 0.56 1" rotation = "-0.0 0.0 -1.0 1.0472" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.65 1.53 2.98" scale = "1 1.09 1" rotation = "0.6063 -0.0 0.7953 2.0012" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.01 1.53 2.98" scale = "1 0.9 1" rotation = "0.775 0.0 -0.632 2.1015" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.33 0.98 2.98" scale = "1 0.9 1" rotation = "0.9706 -0.0 0.2408 0.7596" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.69 0.98 2.98" scale = "1 1.43 1" rotation = "0.4698 0.0 -0.8828 1.0994" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.33 1.34 2.46" scale = "1 1.65 1" rotation = "0.9959 -0.0 0.0903 1.6229" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.01 0.79 2.46" scale = "1 1.99 1" rotation = "0.9584 -0.0 -0.2856 1.0341" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.65 0.79 2.46" scale = "1 2.09 1" rotation = "0.9018 -0.0 0.4322 1.0605" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "1.69 1.34 2.46" scale = "1 1.99 1" rotation = "0.8244 -0.0 -0.566 1.6139" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.01 1.53 2.98" scale = "1 0.9 1" rotation = "0.775 0.0 -0.632 2.1015" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.65 1.53 2.98" scale = "1 1.09 1" rotation = "0.6063 -0.0 0.7953 2.0012" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.01 1.16 3.28" scale = "1 0.56 1" rotation = "-0.0 0.0 -1.0 1.0472" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.25 1.3 3.28" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.33 0.98 2.98" scale = "1 0.9 1" rotation = "0.9706 -0.0 0.2408 0.7596" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.33 1.34 2.46" scale = "1 1.65 1" rotation = "0.9959 -0.0 0.0903 1.6229" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.33 0.98 2.98" scale = "1 0.9 1" rotation = "0.9706 -0.0 0.2408 0.7596" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.33 1.34 2.46" scale = "1 1.65 1" rotation = "0.9959 -0.0 0.0903 1.6229" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.01 1.53 2.98" scale = "1 0.9 1" rotation = "0.775 0.0 -0.632 2.1015" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.65 1.53 2.98" scale = "1 1.09 1" rotation = "0.6063 -0.0 0.7953 2.0012" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+           <Transform translation = "2.25 1.3 3.28" scale = "1 0.0 1" rotation = "nan nan nan nan" > 
+             <Shape USE = "N" > 
+             </Shape> 
+           </Transform> 
+         </Group> 
+       </Switch> 
+       <Switch id = "switch_marker_0_74d181ce" whichChoice = "-1" > 
+         <Transform id = "marker_0_74d181ce" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_marker_1_74d181ce" whichChoice = "-1" > 
+         <Transform id = "marker_1_74d181ce" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_marker_2_74d181ce" whichChoice = "-1" > 
+         <Transform id = "marker_2_74d181ce" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_marker_3_74d181ce" whichChoice = "-1" > 
+         <Transform id = "marker_3_74d181ce" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_marker_4_74d181ce" whichChoice = "-1" > 
+         <Transform id = "marker_4_74d181ce" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_line_0_74d181ce" whichChoice = "-1" > 
+         <Shape > 
+           <IndexedLineSet id = "line_ind_0_74d181ce" solid = "false" coordIndex = "0 1 -1" > 
+             <Coordinate id = "line_coor_0_74d181ce" point = "0 0 0 0 0 1" > 
+             </Coordinate> 
+           </IndexedLineSet> 
+           <Appearance > 
+             <Material diffuseColor = "0 0 0" emissiveColor = "0 0.5 1" > 
+             </Material> 
+           </Appearance> 
+         </Shape> 
+       </Switch> 
+       <Switch id = "switch_line_1_74d181ce" whichChoice = "-1" > 
+         <Shape > 
+           <IndexedLineSet id = "line_ind_1_74d181ce" solid = "false" coordIndex = "0 1 -1" > 
+             <Coordinate id = "line_coor_1_74d181ce" point = "0 0 0 0 0 1" > 
+             </Coordinate> 
+           </IndexedLineSet> 
+           <Appearance > 
+             <Material diffuseColor = "0 0 0" emissiveColor = "0 0.5 1" > 
+             </Material> 
+           </Appearance> 
+         </Shape> 
+       </Switch> 
+     </Scene> 
+   </X3D> 
+ </div> 
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.0.min.js" ></script>
+ <script >
+ if (atoms_dict == undefined) {var atoms_dict = {"new": true};}; 
+atoms_dict["74d181ce"] = {com: "1.91 1.80 1.16", 
+top_pos: "1.91 1.80 12.65", 
+front_pos: "1.91 -9.69 1.16", 
+right_pos: "13.39 1.80 1.16", 
+left_pos: "-9.58 1.80 1.16", 
+top_ori: "0 0 0 0", 
+front_ori: "1 0 0 1.57079", 
+right_ori: "0 1 0 1.57079", 
+left_ori: "0 1 0 -1.57079", 
+select: [], 
+uuid: "74d181ce", 
+label: "False", 
+bond: "1.0", 
+polyhedra: {}, 
+};
+
+// if (atoms_dict[uuid]['new']){
+function setQuality(uuid, quality){
+        // $('#error_'.concat(atoms_dict[uuid]['uuid'])).html('uuid: '.concat(atoms_dict[uuid]["uuid"]));
+        var x3d = 'x3dase_' + uuid;
+        document.getElementById(x3d).setAttribute('PrimitiveQuality', quality);
+    }
+function set_viewpoint(uuid, pos, ori){
+    // $('#error_'.concat(atoms_dict[uuid]['uuid'])).html('uuid: '.concat(atoms_dict[uuid]["uuid"]));
+    var persp = 'camera_persp_' + uuid;
+    var ortho = 'camera_ortho_' + uuid;
+    document.getElementById(persp).setAttribute('orientation', atoms_dict[uuid][ori]);
+    document.getElementById(persp).setAttribute('position', atoms_dict[uuid][pos]);
+    document.getElementById(ortho).setAttribute('orientation', atoms_dict[uuid][ori]);
+    document.getElementById(ortho).setAttribute('position', atoms_dict[uuid][pos]);
+}
+
+//Round a float value to x.xx format
+function roundWithTwoDecimals(value)
+{
+    var x = (Math.round(value * 100)) / 100;
+    var y = x.toFixed(2);
+    return y;
+}
+//Handle click on any group member
+function handleGroupClick(event)
+{
+    //Mark hitting point
+    var target = event.target;
+    var uuid = target.parentNode.getAttribute('uuid')
+    var radius = target.parentNode.getAttribute('radius');
+    var scale = target.parentNode.getAttribute('scale');
+    scale = parseFloat(radius)*parseFloat(scale)*1.2;
+    var scale = ' ' + scale + ' ' + scale + ' ' + scale;
+    var translation = target.parentNode.getAttribute('translation');
+    var id = target.parentNode.getAttribute('id');
+    if (window.event.ctrlKey) {
+        atoms_dict[uuid]['select'].push(id);
+
+    }
+    else {
+        for (var i=1; i<= atoms_dict[uuid]['select'].length; i++) {
+            $('#switch_marker_' + i + '_' + uuid).attr('whichChoice', -1);
+        }
+        atoms_dict[uuid]['select'] = [];
+        atoms_dict[uuid]['select'].push(id);
+        $('#switch_marker_' + 2 + '_' + uuid).attr('whichChoice', -1);
+}
+    var n = atoms_dict[uuid]['select'].length;
+    $('#switch_marker_' + n + '_' + uuid).attr('whichChoice', 0);
+    $('#marker_' + n + '_' + uuid).attr('translation', translation);
+    $('#marker_' + n + '_' + uuid).attr('scale', scale);
+    var atom_kind = '#lastonMouseoverObject_kind_'.concat(uuid);
+    var atom_index = '#lastonMouseoverObject_index_'.concat(uuid);
+    $(atom_kind).html(target.getAttribute("kind"));
+    $(atom_index).html(target.getAttribute("index"));
+    //
+    var coord = translation.split(" ")
+    var atom_position = '#position_'.concat(uuid);
+    var x = roundWithTwoDecimals(coord[0]);
+    var y = roundWithTwoDecimals(coord[1]);
+    var z = roundWithTwoDecimals(coord[2]);
+    var position = 'x = ' + x + ' y = ' + y + ' z = ' + z;
+    $(atom_position).html(position);
+
+    if (atoms_dict[uuid]['select'].length == 2){
+        calculate_distance(uuid);
+        draw_line(uuid);
+    }
+    else if (atoms_dict[uuid]['select'].length == 3){
+        calculate_angle(uuid);
+        draw_line(uuid);
+    }
+
+    console.log(event);
+}
+//Add a onMouseover callback to every shape
+$(document).ready(function(){
+    $("shape").each(function() {
+        // $(this).attr("onMouseover", "handleOnMouseover_shape(this)");
+        // $(this).attr("onclick", "handleClick_shape(this)");
+    });
+    //Add a onMouseover callback to every transform
+    $("transform").each(function() {
+        // $(this).attr("onMouseover", "handleOnMouseover_transform(this)");
+        // $(this).attr("onclick", "handleClick_transform(this)");
+    });
+});
+$(document).on("click", function(e) {
+    if (e.target === document || e.target.tagName === "BODY" || e.target.tagName === "HTML") {
+        $('#marker').attr('scale', "0.0001 0.0001 0.0001");
+    }
+});
+//Handle onMouseover on a shape
+function handleOnMouseover_shape(shape)
+{
+    var atom_kind = '#lastonMouseoverObject_kind_'.concat($(shape).attr("uuid"));
+    var atom_index = '#lastonMouseoverObject_index_'.concat($(shape).attr("uuid"));
+    $(atom_kind).html($(shape).attr("kind"));
+    $(atom_index).html($(shape).attr("index"));
+}
+//Handle onMouseover on a shape
+function handleClick_shape(shape)
+{
+    var atom_kind = '#lastonMouseoverObject_kind_'.concat($(shape).attr("uuid"));
+    var atom_index = '#lastonMouseoverObject_index_'.concat($(shape).attr("uuid"));
+    $(atom_kind).html($(shape).attr("kind"));
+    $(atom_index).html($(shape).attr("index"));
+}
+//Handle onMouseover on a transform
+function handleOnMouseover_transform(transform)
+{
+    var atom_position = '#position_'.concat($(transform).attr("uuid"));
+    var coord = $(transform).attr("translation").split(" "[0]);
+    var x = roundWithTwoDecimals(coord[0]);
+    var y = roundWithTwoDecimals(coord[1]);
+    var z = roundWithTwoDecimals(coord[2]);
+    var position = 'x = ' + x + ' y = ' + y + ' z = ' + z;
+    $(atom_position).html(position);
+}
+
+function calculate_distance(uuid)
+{
+    var measure = '#measure_'.concat(uuid);
+    var c1 = document.getElementById(atoms_dict[uuid]['select'][0]).getAttribute("translation").split(" ");
+    var c2 = document.getElementById(atoms_dict[uuid]['select'][1]).getAttribute("translation").split(" ");
+    r = (c1[0] - c2[0])*(c1[0] - c2[0]) + (c1[1] - c2[1])*(c1[1] - c2[1]) + (c1[2] - c2[2])*(c1[2] - c2[2]);
+    r = roundWithTwoDecimals(Math.sqrt(r));
+    var dist = 'Distance:  ' + r;
+    $(measure).html(dist);
+}
+function calculate_angle(uuid)
+{
+    var measure = '#measure_'.concat(uuid);
+    var c1 = document.getElementById(atoms_dict[uuid]['select'][0]).getAttribute("translation").split(" ");
+    var c2 = document.getElementById(atoms_dict[uuid]['select'][1]).getAttribute("translation").split(" ");
+    var c3 = document.getElementById(atoms_dict[uuid]['select'][2]).getAttribute("translation").split(" ");
+    var AB = Math.sqrt(Math.pow(c2[0]-c1[0],2)+ Math.pow(c2[1]-c1[1],2) + Math.pow(c2[2]-c1[2],2));    
+    var BC = Math.sqrt(Math.pow(c2[0]-c3[0],2)+ Math.pow(c2[1]-c3[1],2) + Math.pow(c2[2]-c3[2],2)); 
+    var AC = Math.sqrt(Math.pow(c3[0]-c1[0],2)+ Math.pow(c3[1]-c1[1],2)+ Math.pow(c3[2]-c1[2],2));
+    var angle = roundWithTwoDecimals(Math.acos((BC*BC+AB*AB-AC*AC)/(2*BC*AB))*180/3.1415926);
+    var angle = 'angle:  ' + angle;
+    $(measure).html(angle);
+}
+function draw_line(uuid)
+{
+    var n = atoms_dict[uuid]['select'].length;
+    var coordIndex = '';
+    var point = document.getElementById(atoms_dict[uuid]['select'][0]).getAttribute("translation");
+    for (var i = 1; i < n; i++) {
+        var c1 = document.getElementById(atoms_dict[uuid]['select'][i]).getAttribute("translation");
+        coordIndex = coordIndex + (i-1) + ' ' + i + ' -1 ';
+        point = point + ' ' + c1 + ' ';
+    }
+    $('#line_coor_' + 0 + '_' + uuid).attr('point', point);
+    $('#line_ind_' + 0 + '_' + uuid).attr('coordIndex', coordIndex);
+    $('#switch_line_' + 0 + '_' + uuid).attr('whichChoice', 0);
+}
+//Handle models
+function spacefilling(uuid)
+{
+    var objs = document.getElementsByName(''.concat('at_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("scale", "1.0, 1.0, 1.0");
+        }
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '-1');
+    document.getElementById('ps_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+function ballstick(uuid)
+{
+    if (atoms_dict[uuid]['bond']=='False'){ 
+        alert('Please set bond parameter in your code, e.g. bond=1.0!');
+        $('#error_'.concat(uuid)).html('(^_^) Please set bond parameter in your code, e.g. bond=1.0!');
+		return ;
+    }
+    var objs = document.getElementsByName(''.concat('at_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("scale", "0.6, 0.6, 0.6");
+        }
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '0');
+    document.getElementById('ps_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+function polyhedra(uuid)
+{
+    if (atoms_dict[uuid]['polyhedra'].length==0){ 
+        alert('Please set polyhedra parameter in your code, e.g. polyhedra={"Ti": ["O"]}!');
+        $('#error_'.concat(uuid)).html('(^_^) Please set polyhedra parameter in your code, e.g. polyhedra={"Ti": ["O"]}!');
+		return ;
+    }
+    var objs = document.getElementsByName(''.concat('at_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("scale", "0.6, 0.6, 0.6");
+        }
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '0');
+    document.getElementById('ps_'.concat(uuid)).setAttribute("whichChoice", '0');
+}
+function none(uuid)
+{
+    var objs = document.getElementsByName(''.concat('am_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("transparency", "0.0");
+        }
+    document.getElementById('ele_'.concat(uuid)).setAttribute("whichChoice", '-1');
+    document.getElementById('ind_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+        
+function element(uuid)
+{
+    if (atoms_dict[uuid]['label']=='False'){ 
+        alert('To show element, please set label=True in your code!');
+        $('#error_'.concat(uuid)).html('(^_^) To show element, please set label=True in your code!');
+		return ;
+	}
+    var objs = document.getElementsByName(''.concat('am_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("transparency", "0.4");
+        }
+    document.getElementById('ele_'.concat(uuid)).setAttribute("whichChoice", '0');
+    document.getElementById('ind_'.concat(uuid)).setAttribute("whichChoice", '-1');
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+function index(uuid)
+{
+    if (atoms_dict[uuid]['label']=='False'){ 
+        alert('To show index, please set label=True in your code!');
+        $('#error_'.concat(uuid)).html('(^_^) To show index, please set label=True in your code!');
+		return ;
+	}
+    var objs = document.getElementsByName(''.concat('am_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("transparency", "0.4");
+        }
+    document.getElementById('ind_'.concat(uuid)).setAttribute("whichChoice", '0');
+    document.getElementById('ele_'.concat(uuid)).setAttribute("whichChoice", '-1');
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+// } 
+</script> </body>
+</html>

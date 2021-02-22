@@ -1,0 +1,12 @@
+#!/bin/bash
+#SBATCH --job-name=lto 
+#SBATCH --output=lto.out
+#SBATCH --error=lto.err
+#SBATCH --wait
+#SBATCH --nodes=4
+#SBATCH --ntasks-per-node=20
+#SBATCH --partition=empi
+#SBATCH --mem-per-cpu=5G
+#SBATCH --time=23:59:00
+ 
+mpirun -n 1 pw.x -nk 5 -in lto.pwi > lto.pwo 
