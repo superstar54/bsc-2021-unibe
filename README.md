@@ -13,6 +13,6 @@ The project including the following parts:
 ## Set-up working environment
 * Connect to the HPC, Ubelix. If you are using a Windows system, please have a look at this introduction.
 https://github.com/superstar54/pc2-practical-cc/blob/main/Setup.docx
-* You can also use VScode for the conneciton
+* You can also use VScode for the connection
 
 
